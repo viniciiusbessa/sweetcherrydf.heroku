@@ -15,7 +15,6 @@ import _infoa_enl_usuario from  "./infoa_enl_usuario.js";
 import _infoa_gab_cartao from  "./infoa_gab_cartao.js";
 import _infoa_gab_empresa from  "./infoa_gab_empresa.js";
 import _infoa_gab_endereco from  "./infoa_gab_endereco.js";
-import _infoa_gab_entrega from  "./infoa_gab_entrega.js";
 import _infoa_gab_produto from  "./infoa_gab_produto.js";
 import _infoa_gab_usuario from  "./infoa_gab_usuario.js";
 import _infoa_gab_venda from  "./infoa_gab_venda.js";
@@ -36,6 +35,30 @@ import _infoc_ntc_denuncia from  "./infoc_ntc_denuncia.js";
 import _infoc_ntc_local from  "./infoc_ntc_local.js";
 import _infoc_ntc_usuario from  "./infoc_ntc_usuario.js";
 import _infoc_ntc_vestimento from  "./infoc_ntc_vestimento.js";
+import _infod_leo_agendamento from  "./infod_leo_agendamento.js";
+import _infod_leo_cliente from  "./infod_leo_cliente.js";
+import _infod_leo_funcionario from  "./infod_leo_funcionario.js";
+import _infod_leo_servico from  "./infod_leo_servico.js";
+import _infod_leo_servico_imagem from  "./infod_leo_servico_imagem.js";
+import _infod_ssc_cliente from  "./infod_ssc_cliente.js";
+import _infod_ssc_endereco from  "./infod_ssc_endereco.js";
+import _infod_ssc_estoque from  "./infod_ssc_estoque.js";
+import _infod_ssc_item_venda from  "./infod_ssc_item_venda.js";
+import _infod_ssc_produto from  "./infod_ssc_produto.js";
+import _infod_ssc_venda from  "./infod_ssc_venda.js";
+import _infod_tif_acessos from  "./infod_tif_acessos.js";
+import _infod_tif_amigos from  "./infod_tif_amigos.js";
+import _infod_tif_animes from  "./infod_tif_animes.js";
+import _infod_tif_autorizados from  "./infod_tif_autorizados.js";
+import _infod_tif_chat from  "./infod_tif_chat.js";
+import _infod_tif_chat_mensagem from  "./infod_tif_chat_mensagem.js";
+import _infod_tif_chat_usuario from  "./infod_tif_chat_usuario.js";
+import _infod_tif_comentario from  "./infod_tif_comentario.js";
+import _infod_tif_comentario_post from  "./infod_tif_comentario_post.js";
+import _infod_tif_comunidade from  "./infod_tif_comunidade.js";
+import _infod_tif_like from  "./infod_tif_like.js";
+import _infod_tif_post from  "./infod_tif_post.js";
+import _infod_tif_usuario from  "./infod_tif_usuario.js";
 
 export default function initModels(sequelize) {
   var infoa_enl_cartao_credito = _infoa_enl_cartao_credito.init(sequelize, DataTypes);
@@ -53,7 +76,6 @@ export default function initModels(sequelize) {
   var infoa_gab_cartao = _infoa_gab_cartao.init(sequelize, DataTypes);
   var infoa_gab_empresa = _infoa_gab_empresa.init(sequelize, DataTypes);
   var infoa_gab_endereco = _infoa_gab_endereco.init(sequelize, DataTypes);
-  var infoa_gab_entrega = _infoa_gab_entrega.init(sequelize, DataTypes);
   var infoa_gab_produto = _infoa_gab_produto.init(sequelize, DataTypes);
   var infoa_gab_usuario = _infoa_gab_usuario.init(sequelize, DataTypes);
   var infoa_gab_venda = _infoa_gab_venda.init(sequelize, DataTypes);
@@ -74,6 +96,30 @@ export default function initModels(sequelize) {
   var infoc_ntc_local = _infoc_ntc_local.init(sequelize, DataTypes);
   var infoc_ntc_usuario = _infoc_ntc_usuario.init(sequelize, DataTypes);
   var infoc_ntc_vestimento = _infoc_ntc_vestimento.init(sequelize, DataTypes);
+  var infod_leo_agendamento = _infod_leo_agendamento.init(sequelize, DataTypes);
+  var infod_leo_cliente = _infod_leo_cliente.init(sequelize, DataTypes);
+  var infod_leo_funcionario = _infod_leo_funcionario.init(sequelize, DataTypes);
+  var infod_leo_servico = _infod_leo_servico.init(sequelize, DataTypes);
+  var infod_leo_servico_imagem = _infod_leo_servico_imagem.init(sequelize, DataTypes);
+  var infod_ssc_cliente = _infod_ssc_cliente.init(sequelize, DataTypes);
+  var infod_ssc_endereco = _infod_ssc_endereco.init(sequelize, DataTypes);
+  var infod_ssc_estoque = _infod_ssc_estoque.init(sequelize, DataTypes);
+  var infod_ssc_item_venda = _infod_ssc_item_venda.init(sequelize, DataTypes);
+  var infod_ssc_produto = _infod_ssc_produto.init(sequelize, DataTypes);
+  var infod_ssc_venda = _infod_ssc_venda.init(sequelize, DataTypes);
+  var infod_tif_acessos = _infod_tif_acessos.init(sequelize, DataTypes);
+  var infod_tif_amigos = _infod_tif_amigos.init(sequelize, DataTypes);
+  var infod_tif_animes = _infod_tif_animes.init(sequelize, DataTypes);
+  var infod_tif_autorizados = _infod_tif_autorizados.init(sequelize, DataTypes);
+  var infod_tif_chat = _infod_tif_chat.init(sequelize, DataTypes);
+  var infod_tif_chat_mensagem = _infod_tif_chat_mensagem.init(sequelize, DataTypes);
+  var infod_tif_chat_usuario = _infod_tif_chat_usuario.init(sequelize, DataTypes);
+  var infod_tif_comentario = _infod_tif_comentario.init(sequelize, DataTypes);
+  var infod_tif_comentario_post = _infod_tif_comentario_post.init(sequelize, DataTypes);
+  var infod_tif_comunidade = _infod_tif_comunidade.init(sequelize, DataTypes);
+  var infod_tif_like = _infod_tif_like.init(sequelize, DataTypes);
+  var infod_tif_post = _infod_tif_post.init(sequelize, DataTypes);
+  var infod_tif_usuario = _infod_tif_usuario.init(sequelize, DataTypes);
 
 
   return {
@@ -92,7 +138,6 @@ export default function initModels(sequelize) {
     infoa_gab_cartao,
     infoa_gab_empresa,
     infoa_gab_endereco,
-    infoa_gab_entrega,
     infoa_gab_produto,
     infoa_gab_usuario,
     infoa_gab_venda,
@@ -113,5 +158,29 @@ export default function initModels(sequelize) {
     infoc_ntc_local,
     infoc_ntc_usuario,
     infoc_ntc_vestimento,
+    infod_leo_agendamento,
+    infod_leo_cliente,
+    infod_leo_funcionario,
+    infod_leo_servico,
+    infod_leo_servico_imagem,
+    infod_ssc_cliente,
+    infod_ssc_endereco,
+    infod_ssc_estoque,
+    infod_ssc_item_venda,
+    infod_ssc_produto,
+    infod_ssc_venda,
+    infod_tif_acessos,
+    infod_tif_amigos,
+    infod_tif_animes,
+    infod_tif_autorizados,
+    infod_tif_chat,
+    infod_tif_chat_mensagem,
+    infod_tif_chat_usuario,
+    infod_tif_comentario,
+    infod_tif_comentario_post,
+    infod_tif_comunidade,
+    infod_tif_like,
+    infod_tif_post,
+    infod_tif_usuario,
   };
 }
