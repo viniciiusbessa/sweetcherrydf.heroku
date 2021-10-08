@@ -63,7 +63,6 @@ app.get('/venda', async (req, resp) => {
 
 // Gets feitos e funcionando
 
-
 app.post('/estoque', async (req, resp) => {
     try {
         
@@ -103,4 +102,4 @@ app.post('/produto', async (req, resp) => {
 })
 
 app.listen(process.env.PORT,
-            x => console.log(`Server up at port ${process.env.PORT}`))
+            x => console.log(`Subiu lá baiano na porta ${process.env.PORT}`))
