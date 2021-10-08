@@ -64,7 +64,6 @@ app.get('/venda', async (req, resp) => {
 
 //Gets feitos e funcionando
 
-
 app.post('/estoque', async (req, resp) => {
     try {
         
@@ -101,6 +100,29 @@ app.post('/produto', async (req, resp) => {
     resp.send({ erro: b.toString() })
 }
 })
+
+app.post('/cliente', async (req, resp) => {
+    try {
+        
+        let { id_endereco, nome_cliente, cpf, dt_nascimento, telefone, email, senha } = req.body;
+
+        let b = await db.infod_ssc_produto.create({
+            id_endereco: id_endereco,
+            nm_cliente: nome_cliente,
+            ds_cpf: cpf,
+            dt_nascimento: dt_nascimento,
+            nr_telefone: telefone,
+            ds_email: email,
+            ds_senha: senha
+        })
+        resp.send(b);
+    
+} catch(b) {
+    resp.send({ erro: b.toString() })
+}
+})
+
+
 
 app.listen(process.env.PORT,
             x => console.log(`Subiu lá baiano na porta ${process.env.PORT}`))
