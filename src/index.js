@@ -24,6 +24,44 @@ app.get('/estoque', async (req, resp) => {
     }
 })
 
+app.get('/cliente', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_cliente.findAll({ order: [[ 'id_cliente', 'desc' ]] });
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+
+app.get('/endereco', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_endereco.findAll({ order: [[ 'id_endereco', 'desc' ]] });
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+app.get('/item_venda', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_item_venda.findAll({ order: [[ 'id_item_venda', 'desc' ]] });
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+
+
+
+
+
+
+
+
+
+
 app.post('/estoque', async (req, resp) => {
     try {
         
