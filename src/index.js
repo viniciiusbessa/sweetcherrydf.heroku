@@ -61,12 +61,7 @@ app.get('/venda', async (req, resp) => {
     }
 })
 
-
-
-
-
-
-
+// Gets feitos e funcionando
 
 
 app.post('/estoque', async (req, resp) => {
@@ -86,14 +81,6 @@ app.post('/estoque', async (req, resp) => {
 }
 })
 
-app.get('/produto', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_produto.findAll({ order: [[ 'id_produto', 'desc' ]] });
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
 
 app.post('/produto', async (req, resp) => {
     try {
@@ -114,22 +101,6 @@ app.post('/produto', async (req, resp) => {
     resp.send({ erro: b.toString() })
 }
 })
-
-// app.get('/cliente-usuario', async (req, resp) => {
-//     try {
-//         let mensagens = await
-//             db.infod_ssc_cliente.findAll({
-//                 where: {
-//                     id_cliente: req.params.clienteId
-//                 },
-//                 include: ['infoD_ssc_endereco'],
-//              });
-//         resp.send(mensagens);
-//     } catch (e) {
-//         resp.send(e.toString())
-//     }
-// })
-    
 
 app.listen(process.env.PORT,
             x => console.log(`Server up at port ${process.env.PORT}`))
