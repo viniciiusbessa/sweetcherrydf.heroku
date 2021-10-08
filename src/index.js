@@ -67,11 +67,10 @@ app.get('/venda', async (req, resp) => {
 app.post('/estoque', async (req, resp) => {
     try {
         
-        // let {disponivel, id_produto} = req.body
-
+        let {disponivel, id_produto} = req.body;
         let c = await db.infod_ssc_produto.create({
-            // qtd_disponivel: req.body.disponivel,
-            id_produto: req.body.id_produto
+            qtd_disponivel: disponivel,
+            id_produto: id_produto
         })
 
         resp.send(c);
