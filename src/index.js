@@ -4,6 +4,7 @@ import cors from 'cors'
 
 const app = express();
 app.use(cors());
+app.use(express.json());
 
 app.get('/produto', async (req, resp) => {
     try {
@@ -61,7 +62,7 @@ app.get('/venda', async (req, resp) => {
     }
 })
 
-// Gets feitos e funcionando
+//Gets feitos e funcionando
 
 
 app.post('/estoque', async (req, resp) => {
