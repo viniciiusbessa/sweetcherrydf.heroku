@@ -43,16 +43,16 @@ app.get('/endereco', async (req, resp) => {
     }
 })
 
-app.get('/item_venda', async (req, resp) => {
+
+
+app.get('/venda', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_item_venda.findAll({ order: [[ 'id_item_venda', 'desc' ]] });
+        let r = await db.infod_ssc_venda.findAll({ order: [[ 'id_venda', 'desc' ]] });
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
 })
-
-
 
 
 
