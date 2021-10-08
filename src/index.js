@@ -7,7 +7,7 @@ app.use(cors());
 
 app.get('/produto', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_produto.findAll({ order: [[ 'id_produto', 'desc' ]] });
+        let r = await db.infod_ssc_produto.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -17,7 +17,7 @@ app.get('/produto', async (req, resp) => {
 
 app.get('/estoque', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_estoque.findAll({ order: [[ 'id_estoque', 'desc' ]] });
+        let r = await db.infod_ssc_estoque.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -26,7 +26,7 @@ app.get('/estoque', async (req, resp) => {
 
 app.get('/cliente', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_cliente.findAll({ order: [[ 'id_cliente', 'desc' ]] });
+        let r = await db.infod_ssc_cliente.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -36,7 +36,7 @@ app.get('/cliente', async (req, resp) => {
 
 app.get('/endereco', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_endereco.findAll({ order: [[ 'id_endereco', 'desc' ]] });
+        let r = await db.infod_ssc_endereco.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -45,7 +45,7 @@ app.get('/endereco', async (req, resp) => {
 
 app.get('/item_venda', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_item_venda.findAll({ order: [[ 'id_item_venda', 'desc' ]] });
+        let r = await db.infod_ssc_item_venda.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -54,7 +54,7 @@ app.get('/item_venda', async (req, resp) => {
 
 app.get('/venda', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_venda.findAll({ order: [[ 'id_venda', 'desc' ]] });
+        let r = await db.infod_ssc_venda.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -63,20 +63,21 @@ app.get('/venda', async (req, resp) => {
 
 // Gets feitos e funcionando
 
+
 app.post('/estoque', async (req, resp) => {
     try {
         
-        let { disponivel, id_produto} = req.body
+        // let {disponivel, id_produto} = req.body
 
-        let b = await db.infod_ssc_produto.create({
-            qtd_disponivel: disponivel,
-            id_produto: id_produto
+        let c = await db.infod_ssc_produto.create({
+            // qtd_disponivel: req.body.disponivel,
+            id_produto: req.body.id_produto
         })
 
-        resp.send(b);
+        resp.send(c);
     
-} catch(b) {
-    resp.send({ erro: b.toString() })
+} catch(c) {
+    resp.send({ erro: c.toString() })
 }
 })
 
