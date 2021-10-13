@@ -1,6 +1,7 @@
 import db from './db.js';
 import express from 'express'
 import cors from 'cors'
+import { json } from 'sequelize/types';
 
 const app = express();
 app.use(cors());
@@ -101,6 +102,7 @@ app.post('/produto', async (req, resp) => {
 }
 })
 
+
 app.post('/cliente', async (req, resp) => {
     try {
         
@@ -121,6 +123,59 @@ app.post('/cliente', async (req, resp) => {
     resp.send({ erro: b.toString() })
 }
 })
+
+
+app.post('/endereco', async (req, resp) => {
+    try {
+        
+        let { endereco, numero_do_endereco, descricao_do_cep, nome_cidade, complemento } = req.body;
+
+        let j = await db.infod_ssc_endereco.create({
+            ds_endereco: endereco,
+            nr_endereco: numero_do_endereco,
+            ds_cep: descricao_do_cep,
+            nm_cidade: nome_cidade,
+            ds_complemeno: complemento
+        })
+        resp.send(j);
+    
+} catch(j) {
+    resp.send({ erro: j.toString() })
+}
+})
+
+app.post('/item_venda', async (req, resp) => {
+    try {
+        
+        let { id_produto, id_venda } = req.body;
+
+        let j = await db.infod_ssc_item_venda.create({
+            id_produto: id_produto,
+            id_venda: id_venda
+        })
+        resp.send(json);
+    
+} catch(j) {
+    resp.send({ erro: j.toString() })
+}
+
+
+})
+app.post('/', async (req, resp) => {
+    try {
+        
+        let {  } = req.body;
+
+        let b = await db.infod_ssc_produto.create({
+            
+        })
+        resp.send(b);
+    
+} catch(b) {
+    resp.send({ erro: b.toString() })
+}
+})
+
 
 
 
