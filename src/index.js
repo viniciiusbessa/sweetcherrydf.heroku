@@ -1,7 +1,8 @@
 import db from './db.js';
 import express from 'express'
 import cors from 'cors'
-import { json } from 'sequelize/types';
+import { json } from 'sequelize/types'; // O problema esta aqui
+
 
 const app = express();
 app.use(cors());
