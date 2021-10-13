@@ -164,15 +164,25 @@ app.post('/item_venda', async (req, resp) => {
 app.post('/', async (req, resp) => {
     try {
         
-        let {  } = req.body;
+        let { id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca} = req.body;
 
-        let b = await db.infod_ssc_produto.create({
-            
+        let j = await db.infod_ssc_produto.create({
+            id_cliente: id_cliente,
+            id_endereco_entrega: id_endereco_entrega,
+            ds_entrega: descricao_da_entrega ,
+            ds_frete: descricao_do_frete,
+            nm_destinatario: nome_do_destinatario,
+            tp_forma_pagamento: forma_pagamento,
+            dt_venda: data_da_venda,
+            ds_pagamento: descricao_do_pagamento,
+            nr_cartao: numero_do_cartao,
+            qtd_parcelas: quantidade_de_parcelas,
+            ds_codigo_seguranca: descricao_codigo_seguranca
         })
-        resp.send(b);
+        resp.send(j);
     
-} catch(b) {
-    resp.send({ erro: b.toString() })
+} catch(j) {
+    resp.send({ erro: j.toString() })
 }
 })
 
