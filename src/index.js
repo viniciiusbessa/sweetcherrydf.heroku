@@ -7,6 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+
 app.get('/produto', async (req, resp) => {
     try {
         let r = await db.infod_ssc_produto.findAll( );
@@ -15,72 +16,6 @@ app.get('/produto', async (req, resp) => {
         resp.send({ erro: e.toString() })
     }
 })
-
-
-app.get('/estoque', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_estoque.findAll( );
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-app.get('/cliente', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_cliente.findAll( );
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-
-app.get('/endereco', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_endereco.findAll( );
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-app.get('/item_venda', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_item_venda.findAll( );
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-app.get('/venda', async (req, resp) => {
-    try {
-        let r = await db.infod_ssc_venda.findAll( );
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-//Gets feitos e funcionando
-
-app.post('/estoque', async (req, resp) => {
-    try {
-        
-        let {disponivel, id_produto} = req.body;
-        let c = await db.infod_ssc_produto.create({
-            qtd_disponivel: disponivel,
-            id_produto: id_produto
-        })
-
-        resp.send(c);
-    
-} catch(c) {
-    resp.send({ erro: c.toString() })
-}
-})
-
 
 app.post('/produto', async (req, resp) => {
     try {
@@ -102,6 +37,62 @@ app.post('/produto', async (req, resp) => {
 }
 })
 
+app.delete('/produto/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_produto.destroy({ where: { id_produto: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+// Produto
+
+app.get('/estoque', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_estoque.findAll( );
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+app.post('/estoque', async (req, resp) => {
+    try {
+        
+        let {disponivel, id_produto} = req.body;
+        let c = await db.infod_ssc_produto.create({
+            qtd_disponivel: disponivel,
+            id_produto: id_produto
+        })
+
+        resp.send(c);
+    
+    } catch(c) {
+    resp.send({ erro: c.toString() })
+    }
+})
+
+app.delete('/estoque/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_estoque.destroy({ where: { id_estoque: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+// Estoque
+
+app.get('/cliente', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_cliente.findAll( );
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
 
 app.post('/cliente', async (req, resp) => {
     try {
@@ -124,6 +115,25 @@ app.post('/cliente', async (req, resp) => {
 }
 })
 
+app.delete('/cliente/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_cliente.destroy({ where: { id_cliente: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+// Cliente
+
+app.get('/endereco', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_endereco.findAll( );
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
 
 app.post('/endereco', async (req, resp) => {
     try {
@@ -144,6 +154,26 @@ app.post('/endereco', async (req, resp) => {
 }
 })
 
+app.delete('/endereco/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_endereco.destroy({ where: { id_endereco: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+// Endereco
+
+app.get('/item_venda', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_item_venda.findAll( );
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
 app.post('/item_venda', async (req, resp) => {
     try {
         
@@ -155,18 +185,38 @@ app.post('/item_venda', async (req, resp) => {
         })
         resp.send(json);
     
-} catch(j) {
+    } catch(j) {
     resp.send({ erro: j.toString() })
-}
-
-
+    }
 })
-app.post('/', async (req, resp) => {
+
+app.delete('/item_venda/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_item_venda.destroy({ where: { id_item_venda: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+// Item_venda
+
+app.get('/venda', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_venda.findAll( );
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+app.post('venda/', async (req, resp) => {
     try {
         
         let { id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca} = req.body;
 
-        let j = await db.infod_ssc_produto.create({
+        let j = await db.infod_ssc_venda.create({
             id_cliente: id_cliente,
             id_endereco_entrega: id_endereco_entrega,
             ds_entrega: descricao_da_entrega ,
@@ -186,8 +236,16 @@ app.post('/', async (req, resp) => {
 }
 })
 
-
-
+app.delete('/venda/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_venda.destroy({ where: { id_venda: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+// Venda
 
 app.listen(process.env.PORT,
-            x => console.log(`Subiu lá baiano na porta ${process.env.PORT}`))
+            x => console.log(`Subiu lá meu nobre na porta ${process.env.PORT}`))
