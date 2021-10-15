@@ -10,6 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 
+
 app.get('/produto', async (req, resp) => {
     try {
         let r = await db.infod_ssc_produto.findAll( );
@@ -49,6 +50,30 @@ app.delete('/produto/:id', async (req, resp) => {
     }
 })
 
+app.put('/produto/:id', async (req, resp) => {
+    try{
+        let { nome, preco, categoria, descricao, avaliacao, imagem } = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_produto.update(
+            {
+                nm_produto: nome,
+                vl_produto: preco,
+                nm_categoria: categoria,
+                ds_produto: descricao,
+                ds_avaliacao: avaliacao,
+                ds_imagem: imagem
+            },
+            {
+                where: { id_produto: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})
+
 // Produto
 
 app.get('/estoque', async (req, resp) => {
@@ -63,11 +88,14 @@ app.get('/estoque', async (req, resp) => {
 app.post('/estoque', async (req, resp) => {
     try {
         
-        let {disponivel, produto} = req.body;
-        let c = await db.infod_ssc_estoque.create({
-            qtd_disponivel: disponivel,
-            id_produto: produto
-        })
+        let { produto, disponivel} = req.body;
+        let c = await db.infod_ssc_estoque.create(
+         {
+            
+            id_produto: produto,
+            qtd_disponivel: disponivel
+        
+         })
 
         resp.send(c);
     
@@ -75,6 +103,26 @@ app.post('/estoque', async (req, resp) => {
     resp.send({ erro: c.toString() })
     }
 })
+
+app.put('/estoque/:id', async (req, resp) => {
+    try{
+        let {  produto, disponivel} = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_estoque.update(
+            {
+                id_produto: produto,
+                qtd_disponivel: disponivel
+            },
+            {
+                where: { id_estoque: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})  
 
 app.delete('/estoque/:id', async (req, resp) => {
     try {
@@ -117,6 +165,32 @@ app.post('/cliente', async (req, resp) => {
 }
 })
 
+app.put('/cliente/:id', async (req, resp) => {
+    try{
+        let {  endereco, nome_cliente, cpf, dtnascimento, telefone, email, senha } = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_cliente.update(
+            {
+                id_endereco: endereco,
+                nm_cliente: nome_cliente,
+                ds_cpf: cpf,
+                dt_nascimento: dtnascimento,
+                nr_telefone: telefone,
+                ds_email: email,
+                ds_senha: senha
+
+            },
+            {
+                where: { id_cliente: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})  
+
 app.delete('/cliente/:id', async (req, resp) => {
     try {
         let { id } = req.params;
@@ -156,6 +230,30 @@ app.post('/endereco', async (req, resp) => {
 }
 })
 
+app.put('/endereco/:id', async (req, resp) => {
+    try{
+        let {  endereco, numero_do_endereco, descricao_do_cep, nome_cidade, complemento } = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_endereco.update(
+            {
+                ds_endereco: endereco,
+                nr_endereco: numero_do_endereco,
+                ds_cep: descricao_do_cep,
+                nm_cidade: nome_cidade,
+                ds_complemeno: complemento
+                
+            },
+            {
+                where: { id_endereco: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})  
+
 app.delete('/endereco/:id', async (req, resp) => {
     try {
         let { id } = req.params;
@@ -179,11 +277,13 @@ app.get('/item_venda', async (req, resp) => {
 app.post('/item_venda', async (req, resp) => {
     try {
         
-        let { id_do_produto, id_do_venda } = req.body;
+        let { id_do_produto, id_da_venda } = req.body;
 
         let j = await db.infod_ssc_item_venda.create({
+
             id_produto: id_do_produto,
-            id_venda: id_do_venda
+            id_venda: id_da_venda
+
         })
         resp.send(j);
     
@@ -202,6 +302,27 @@ app.delete('/item_venda/:id', async (req, resp) => {
     }
 })
 
+app.put('/item_venda/:id', async (req, resp) => {
+    try{
+        let {  id_do_produto, id_da_venda } = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_item_venda.update(
+            {
+                id_produto: id_do_produto,
+                id_venda: id_da_venda
+                
+            },
+            {
+                where: { id_item_venda: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})  
+
 // Item_venda
 
 app.get('/venda', async (req, resp) => {
@@ -216,9 +337,10 @@ app.get('/venda', async (req, resp) => {
 app.post('/venda', async (req, resp) => {
     try {
         
-        let { id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca} = req.body;
+        let { id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca } = req.body;
 
         let j = await db.infod_ssc_venda.create({
+
             id_cliente: id_cliente,
             id_endereco_entrega: id_endereco_entrega,
             ds_entrega: descricao_da_entrega ,
@@ -230,6 +352,7 @@ app.post('/venda', async (req, resp) => {
             nr_cartao: numero_do_cartao,
             qtd_parcelas: quantidade_de_parcelas,
             ds_codigo_seguranca: descricao_codigo_seguranca
+
         })
         resp.send(j);
     
@@ -237,6 +360,37 @@ app.post('/venda', async (req, resp) => {
     resp.send({ erro: j.toString() })
 }
 })
+
+app.put('/venda/:id', async (req, resp) => {
+    try{
+        let {  id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca } = req.body;
+        let { id } = req.params;
+
+        let b = await db.infod_ssc_venda.update(
+            {
+                
+            id_cliente: id_cliente,
+            id_endereco_entrega: id_endereco_entrega,
+            ds_entrega: descricao_da_entrega ,
+            ds_frete: descricao_do_frete,
+            nm_destinatario: nome_do_destinatario,
+            tp_forma_pagamento: forma_pagamento,
+            dt_venda: data_da_venda,
+            ds_pagamento: descricao_do_pagamento,
+            nr_cartao: numero_do_cartao,
+            qtd_parcelas: quantidade_de_parcelas,
+            ds_codigo_seguranca: descricao_codigo_seguranca
+            
+            },
+            {
+                where: { id_venda: id }
+            }
+        )
+        resp.sendStatus(200);
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})  
 
 app.delete('/venda/:id', async (req, resp) => {
     try {
