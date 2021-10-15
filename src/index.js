@@ -200,6 +200,53 @@ app.delete('/cliente/:id', async (req, resp) => {
         resp.send({ erro: e.toString() })
     }
 })
+
+app.post('/login', async (req, resp) => {
+    try {
+        let { email, senha } = req.body;
+
+        let r = await db.infod_ssc_cliente.findOne(
+            {
+                where: {
+                    ds_email: email,
+                    ds_senha: senha
+                },
+                raw: true
+            }
+        )
+
+        if (r === null) {
+            return resp.send({ erro: 'Credenciais inválidas.' })
+        }
+    
+        delete r.ds_senha;
+        resp.send(r);
+        
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})
+
+app.post('/cadastro', async (req, resp) => {
+    try {
+        
+        let  { nome, email, senha } = req.body;
+
+        let b = await db.infod_ssc_cliente.create({
+            nm_cliente: nome,
+            ds_email: email,
+            ds_senha: senha
+        })
+
+        if (nome === "" && email === "" && senha === "") {
+            return resp.send({ erro: 'Preencha todos os campos!' });
+        }
+        resp.send(b);
+    
+} catch(b) {
+    resp.send({ erro: b.toString() })
+}
+})
 // Cliente
 
 app.get('/endereco', async (req, resp) => {
