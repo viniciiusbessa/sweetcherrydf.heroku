@@ -1,8 +1,6 @@
 import db from './db.js';
 import express from 'express'
 import cors from 'cors'
-import { json } from 'sequelize/types'; // O problema esta aqui
-
 
 const app = express();
 app.use(cors());
@@ -62,10 +60,10 @@ app.get('/estoque', async (req, resp) => {
 app.post('/estoque', async (req, resp) => {
     try {
         
-        let {disponivel, id_produto} = req.body;
-        let c = await db.infod_ssc_produto.create({
+        let {disponivel, produto} = req.body;
+        let c = await db.infod_ssc_estoque.create({
             qtd_disponivel: disponivel,
-            id_produto: id_produto
+            id_produto: produto
         })
 
         resp.send(c);
@@ -98,13 +96,13 @@ app.get('/cliente', async (req, resp) => {
 app.post('/cliente', async (req, resp) => {
     try {
         
-        let { id_endereco, nome_cliente, cpf, dt_nascimento, telefone, email, senha } = req.body;
+        let { endereco, nome_cliente, cpf, dtnascimento, telefone, email, senha } = req.body;
 
-        let b = await db.infod_ssc_produto.create({
-            id_endereco: id_endereco,
+        let b = await db.infod_ssc_cliente.create({
+            id_endereco: endereco,
             nm_cliente: nome_cliente,
             ds_cpf: cpf,
-            dt_nascimento: dt_nascimento,
+            dt_nascimento: dtnascimento,
             nr_telefone: telefone,
             ds_email: email,
             ds_senha: senha
@@ -178,13 +176,13 @@ app.get('/item_venda', async (req, resp) => {
 app.post('/item_venda', async (req, resp) => {
     try {
         
-        let { id_produto, id_venda } = req.body;
+        let { id_do_produto, id_do_venda } = req.body;
 
         let j = await db.infod_ssc_item_venda.create({
-            id_produto: id_produto,
-            id_venda: id_venda
+            id_produto: id_do_produto,
+            id_venda: id_do_venda
         })
-        resp.send(json);
+        resp.send(j);
     
     } catch(j) {
     resp.send({ erro: j.toString() })
@@ -212,7 +210,7 @@ app.get('/venda', async (req, resp) => {
     }
 })
 
-app.post('venda/', async (req, resp) => {
+app.post('/venda', async (req, resp) => {
     try {
         
         let { id_cliente, id_endereco_entrega, descricao_da_entrega, descricao_do_frete, nome_do_destinatario, forma_pagamento, data_da_venda, descricao_do_pagamento, numero_do_cartao, quantidade_de_parcelas, descricao_codigo_seguranca} = req.body;
