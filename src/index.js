@@ -9,6 +9,15 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Recuperaçao de senha
+
+app.post('/BemVindo', async (req,resp) =>{
+    
+})
+
+
+
+// Recuperaçao de senha
 
 
 app.get('/produto', async (req, resp) => {
