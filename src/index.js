@@ -2,6 +2,7 @@ import db from './db.js';
 import express from 'express'
 import cors from 'cors'
 import axios from 'axios'
+import crypto from 'crypto-js'
 
 import enviarEmail from './email.js';
 
@@ -156,7 +157,7 @@ app.post('/cliente', async (req, resp) => {
             dt_nascimento: dtnascimento,
             nr_telefone: telefone,
             ds_email: email,
-            ds_senha: senha
+            ds_senha: crypto.SHA256(senha).toString(crypto.enc.Base64)
         })
         resp.send(b);
     
@@ -204,16 +205,21 @@ app.delete('/cliente/:id', async (req, resp) => {
 app.post('/login', async (req, resp) => {
     try {
         let { email, senha } = req.body;
+        let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
 
         let r = await db.infod_ssc_cliente.findOne(
             {
                 where: {
                     ds_email: email,
-                    ds_senha: senha
+                    ds_senha: cryptoSenha
                 },
                 raw: true
             }
         )
+
+        if (email === "" && senha === "") {
+            return resp.send({ erro: 'Preencha todos os campos!' });
+        }
 
         if (r === null) {
             return resp.send({ erro: 'Credenciais inválidas.' })
@@ -232,15 +238,20 @@ app.post('/cadastro', async (req, resp) => {
         
         let  { nome, email, senha } = req.body;
 
-        let b = await db.infod_ssc_cliente.create({
-            nm_cliente: nome,
-            ds_email: email,
-            ds_senha: senha
-        })
-
         if (nome === "" && email === "" && senha === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
+
+        if (email.includes('@')) {
+            return resp.send('Ok')
+        }
+
+        let b = await db.infod_ssc_cliente.create({
+            nm_cliente: nome,
+            ds_email: email,
+            ds_senha: crypto.SHA256(senha).toString(crypto.enc.Base64)
+        })
+
         resp.send(b);
     
 } catch(b) {
