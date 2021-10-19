@@ -110,7 +110,7 @@ app.use(express.json());
 
 app.get('/produto', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_produto.findAll( );
+        let r = await db.infod_ssc_produto.findAll({ order: [[ 'id_produto', 'desc' ]] });
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -122,6 +122,9 @@ app.post('/produto', async (req, resp) => {
         
         let { nome, preco, categoria, descricao, avaliacao, imagem } = req.body;
 
+        if (nome === ''  || preco === ''  || descricao === '' || imagem === '')
+            return resp.send({ erro: 'Preencha todos os campos!' })
+
         let b = await db.infod_ssc_produto.create({
             nm_produto: nome,
             vl_produto: preco,
@@ -132,9 +135,9 @@ app.post('/produto', async (req, resp) => {
         })
         resp.send(b);
     
-} catch(b) {
-    resp.send({ erro: b.toString() })
-}
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
 })
 
 app.delete('/produto/:id', async (req, resp) => {
