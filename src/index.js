@@ -174,6 +174,45 @@ app.put('/produto/:id', async (req, resp) => {
     }
 })
 
+
+
+function getOrderCriteria(criteria) {
+    switch (criteria) {
+        case 'Menor Preço': return ['vl_produto', 'asc'];
+        case 'Maior Preço': return ['vl_produto', 'desc'];
+        case 'A - Z': return ['nm_produto', 'asc'];
+        case 'Z - A': return ['nm_produto', 'desc'];
+
+        default: return ['vl_produto', 'asc'];
+    }
+
+}
+  
+app.get('/produtos', async (req, resp) => {
+    let orderCriteria = getOrderCriteria(req.query.ordenacao);
+
+    let products = await db.infod_ssc_produto.findAll({
+        order: [
+        orderCriteria
+        ]
+    })
+
+    products = products.map(item => {
+        return {
+        id: item.id_produto,
+        produto: item.nm_produto,
+        preco: item.vl_produto,
+        descricao: item.nm_categoria,
+        descricao: item.ds_produto,
+        descricao: item.ds_avaliacao,
+        descricao: item.qtd_disponivel_estoque,
+        imagem: item.ds_imagem,
+        }
+    })
+
+    resp.send(products);
+})
+
 // Produto
 
 app.get('/estoque', async (req, resp) => {
