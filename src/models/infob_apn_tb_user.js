@@ -1,22 +1,34 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoa_sti_venda_produto extends Model {
+export default class infob_apn_tb_user extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_venda_produto: {
+    ID_USER: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_vendas: {
-      type: DataTypes.INTEGER,
+    NM_USER: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    NM_SOBRENOME: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    DS_EMAIL: {
+      type: DataTypes.STRING(100),
+      allowNull: true
+    },
+    DS_SENHA: {
+      type: DataTypes.STRING(32),
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoa_sti_venda_produto',
+    tableName: 'infob_apn_tb_user',
     timestamps: false,
     indexes: [
       {
@@ -24,18 +36,11 @@ export default class infoa_sti_venda_produto extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_venda_produto" },
-        ]
-      },
-      {
-        name: "id_vendas",
-        using: "BTREE",
-        fields: [
-          { name: "id_vendas" },
+          { name: "ID_USER" },
         ]
       },
     ]
   });
-  return infoa_sti_venda_produto;
+  return infob_apn_tb_user;
   }
 }
