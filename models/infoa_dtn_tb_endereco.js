@@ -34,7 +34,7 @@ export default class infoa_dtn_tb_endereco extends Model {
       type: DataTypes.STRING(300),
       allowNull: true
     },
-    nr_numero: {
+    ds_numero: {
       type: DataTypes.STRING(10),
       allowNull: true
     },

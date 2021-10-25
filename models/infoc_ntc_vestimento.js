@@ -1,30 +1,38 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoc_ntc_local extends Model {
+export default class infoc_ntc_vestimento extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_local: {
+    id_vestimento: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    ds_latitude: {
+    tp_vestimento: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_longitude: {
+    ds_inferior: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_bairro: {
+    ds_superior: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    ds_calcado: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    ds_complemento: {
       type: DataTypes.STRING(255),
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoc_ntc_local',
+    tableName: 'infoc_ntc_vestimento',
     timestamps: false,
     indexes: [
       {
@@ -32,11 +40,11 @@ export default class infoc_ntc_local extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_local" },
+          { name: "id_vestimento" },
         ]
       },
     ]
   });
-  return infoc_ntc_local;
+  return infoc_ntc_vestimento;
   }
 }
