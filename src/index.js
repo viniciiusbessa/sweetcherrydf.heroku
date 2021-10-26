@@ -120,7 +120,7 @@ app.get('/produto', async (req, resp) => {
 app.post('/produto', async (req, resp) => {
     try {
         
-        let { nome, preco, categoria, descricao, avaliacao, imagem } = req.body;
+        let { nome, preco, categoria, avaliacao, descricao, estoque, imagem } = req.body;
 
         if (nome === ''  || preco === ''  || descricao === '' || imagem === '')
             return resp.send({ erro: 'Preencha todos os campos!' })
@@ -129,8 +129,9 @@ app.post('/produto', async (req, resp) => {
             nm_produto: nome,
             vl_produto: preco,
             nm_categoria: categoria,
-            ds_produto: descricao,
             ds_avaliacao: avaliacao,
+            ds_produto: descricao,
+            qtd_disponivel_estoque: estoque,
             ds_imagem: imagem
         })
         resp.send(b);
@@ -152,7 +153,7 @@ app.delete('/produto/:id', async (req, resp) => {
 
 app.put('/produto/:id', async (req, resp) => {
     try{
-        let { nome, preco, categoria, descricao, avaliacao, imagem } = req.body;
+        let { nome, preco, categoria, avaliacao, descricao, estoque, imagem } = req.body;
         let { id } = req.params;
 
         let b = await db.infod_ssc_produto.update(
@@ -160,8 +161,9 @@ app.put('/produto/:id', async (req, resp) => {
                 nm_produto: nome,
                 vl_produto: preco,
                 nm_categoria: categoria,
-                ds_produto: descricao,
                 ds_avaliacao: avaliacao,
+                ds_produto: descricao,
+                qtd_disponivel_estoque: estoque,
                 ds_imagem: imagem
             },
             {
