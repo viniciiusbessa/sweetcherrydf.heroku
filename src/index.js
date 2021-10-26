@@ -6,6 +6,9 @@ import crypto from 'crypto-js'
 
 import enviarEmail from './email.js';
 
+import  Sequelize  from 'sequelize';
+const { Op, col, fn } = Sequelize;
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -217,25 +220,29 @@ app.get('/produtos', async (req, resp) => {
 
 // Produto
 
-app.get('/estoque', async (req, resp) => {
+app.get('/pedido', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_estoque.findAll( );
+        let r = await db.infod_ssc_pedido.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
 })
 
-app.post('/estoque', async (req, resp) => {
+app.post('/pedido', async (req, resp) => {
     try {
         
-        let { produto, disponivel} = req.body;
-        let c = await db.infod_ssc_estoque.create(
+        let { id_da_venda, id_do_item, valor_pedido, data_do_pedido, descricao_da_entrega, descricao_do_caminho, descricao_do_preparo } = req.body;
+        let c = await db.infod_ssc_pedido.create(
          {
             
-            id_produto: produto,
-            qtd_disponivel: disponivel
-        
+            id_venda: id_da_venda,
+            id_item: id_do_item,
+            vl_pedido: valor_pedido,
+            dt_pedido: data_do_pedido,
+            ds_entregue: descricao_da_entrega,
+            ds_acaminho: descricao_do_caminho,
+            ds_preparando: descricao_do_preparo        
          })
 
         resp.send(c);
@@ -245,18 +252,25 @@ app.post('/estoque', async (req, resp) => {
     }
 })
 
-app.put('/estoque/:id', async (req, resp) => {
+app.put('/pedido/:id', async (req, resp) => {
     try{
-        let {  produto, disponivel} = req.body;
+        let {   id_da_venda, id_do_item, valor_pedido, data_do_pedido, descricao_da_entrega, descricao_do_caminho, descricao_do_preparo} = req.body;
         let { id } = req.params;
 
-        let b = await db.infod_ssc_estoque.update(
+        let b = await db.infod_ssc_pedido.update(
             {
-                id_produto: produto,
-                qtd_disponivel: disponivel
+                 
+            id_venda: id_da_venda,
+            id_item: id_do_item,
+            vl_pedido: valor_pedido,
+            dt_pedido: data_do_pedido,
+            ds_entregue: descricao_da_entrega,
+            ds_acaminho: descricao_do_caminho,
+            ds_preparando: descricao_do_preparo
+               
             },
             {
-                where: { id_estoque: id }
+                where: { id_pedido: id }
             }
         )
         resp.sendStatus(200);
@@ -265,16 +279,16 @@ app.put('/estoque/:id', async (req, resp) => {
     }
 })  
 
-app.delete('/estoque/:id', async (req, resp) => {
+app.delete('/pedido/:id', async (req, resp) => {
     try {
         let { id } = req.params;
-        let r = await db.infod_ssc_estoque.destroy({ where: { id_estoque: id } })
+        let r = await db.infod_ssc_pedido.destroy({ where: { id_pedido: id } })
         resp.sendStatus(200);
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
 })
-// Estoque
+// pedido
 
 app.get('/cliente', async (req, resp) => {
     try {
@@ -463,25 +477,26 @@ app.delete('/endereco/:id', async (req, resp) => {
 })
 // Endereco
 
-app.get('/item_venda', async (req, resp) => {
+app.get('/item', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_item_venda.findAll( );
+        let r = await db.infod_ssc_item.findAll( );
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
 })
 
-app.post('/item_venda', async (req, resp) => {
+app.post('/item', async (req, resp) => {
     try {
         
-        let { id_do_produto, id_da_venda } = req.body;
+        let { id_do_produto, valor, quantidade_do_produto} = req.body;
 
-        let j = await db.infod_ssc_item_venda.create({
+        let j = await db.infod_ssc_item.create({
 
             id_produto: id_do_produto,
-            id_venda: id_da_venda
-
+            vl_item: valor,
+            qtd_produto: quantidade_do_produto
+           
         })
         resp.send(j);
     
@@ -490,29 +505,30 @@ app.post('/item_venda', async (req, resp) => {
     }
 })
 
-app.delete('/item_venda/:id', async (req, resp) => {
+app.delete('/item/:id', async (req, resp) => {
     try {
         let { id } = req.params;
-        let r = await db.infod_ssc_item_venda.destroy({ where: { id_item_venda: id } })
+        let r = await db.infod_ssc_item.destroy({ where: { id_item: id } })
         resp.sendStatus(200);
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
 })
 
-app.put('/item_venda/:id', async (req, resp) => {
+app.put('/item/:id', async (req, resp) => {
     try{
-        let {  id_do_produto, id_da_venda } = req.body;
+        let {  id_do_produto, valor, quantidade_do_produto } = req.body;
         let { id } = req.params;
 
-        let b = await db.infod_ssc_item_venda.update(
+        let b = await db.infod_ssc_item.update(
             {
                 id_produto: id_do_produto,
-                id_venda: id_da_venda
+                vl_item: valor,
+                qtd_produto: quantidade_do_produto
                 
             },
             {
-                where: { id_item_venda: id }
+                where: { id_item: id }
             }
         )
         resp.sendStatus(200);
@@ -521,7 +537,8 @@ app.put('/item_venda/:id', async (req, resp) => {
     }
 })  
 
-// Item_venda
+//item
+
 
 app.get('/venda', async (req, resp) => {
     try {
@@ -632,7 +649,6 @@ app.get('/buscarbairro', async (req, resp) => {
 
     }
 })
-
 
 
 app.listen(process.env.PORT,
