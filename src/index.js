@@ -181,6 +181,8 @@ app.put('/produto/:id', async (req, resp) => {
 
 
 
+
+
 function getOrderCriteria(criteria) {
     switch (criteria) {
         case 'Menor Preço': return ['vl_produto', 'asc'];
@@ -192,7 +194,7 @@ function getOrderCriteria(criteria) {
     }
 
 }
-  
+
 app.get('/produtos', async (req, resp) => {
     let orderCriteria = getOrderCriteria(req.query.ordenacao);
 
@@ -204,19 +206,80 @@ app.get('/produtos', async (req, resp) => {
 
     products = products.map(item => {
         return {
-        id: item.id_produto,
-        produto: item.nm_produto,
-        preco: item.vl_produto,
-        descricao: item.nm_categoria,
-        descricao: item.ds_produto,
-        descricao: item.ds_avaliacao,
-        descricao: item.qtd_disponivel_estoque,
-        imagem: item.ds_imagem,
+            id: item.id_produto,
+            produto: item.nm_produto,
+            preco: item.vl_produto,
+            categoria: item.nm_categoria,
+            descricao: item.ds_produto,
+            avaliacao: item.ds_avaliacao,
+            estoque: item.qtd_disponivel_estoque,
+            imagem: item.ds_imagem
         }
     })
 
     resp.send(products);
 })
+
+
+
+
+
+
+app.get('/v2/produtos', async (req, resp) => {
+    const produtos = await db.infod_ssc_produto.findAll({
+      where: {
+        [Op.or]: [
+          { 'nm_produto':  { [Op.like]:      `%${req.query.filtro}%` } },
+          { 'ds_produto':  { [Op.substring]:  `${req.query.filtro}` } }
+        ]
+      },
+      attributes: [
+        ['id_produto', 'id'],
+        ['nm_produto', 'nome'],
+        ['ds_produto', 'descricao'],
+        ['vl_produto', 'preco']
+      ]
+    })
+  
+    resp.send(produtos);
+});
+  
+
+app.get('/v3/produtos', async (req, resp) => {
+    let page = req.query.page || 0;
+    if (page <= 0) page = 1;
+
+    const itemsPerPage = 6;
+    const skipItems    = (page-1) * itemsPerPage;
+
+    const produtos = await db.infod_ssc_produto.findAll({
+        limit: itemsPerPage,
+        offset: skipItems,
+        order: [[ 'nm_produto', 'asc' ]],
+        attributes: [
+            ['id_produto', 'id'],
+            ['nm_produto', 'produto'],
+            ['ds_produto', 'descricao'],
+            ['vl_produto', 'preco'],
+            ['ds_produto', 'imagem']
+        ]
+    });
+
+    const total = await db.infod_ssc_produto.findOne({
+        raw: true,
+        attributes: [
+            [fn('count', 1), 'qtd']
+        ]
+        });
+
+        resp.send({
+        items: produtos,
+        total: total.qtd,
+        totalPaginas: Math.ceil(total.qtd/6),
+        pagina: Number(page)
+        });
+})
+
 
 // Produto
 
