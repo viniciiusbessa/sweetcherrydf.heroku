@@ -111,9 +111,53 @@ app.use(express.json());
 // Recuperaçao de senha
 
 
+
+app.get('/adm', async (req, resp) => {
+    try {
+        let r = await db.infod_ssc_adm.findAll({
+            attributes: [
+                ['ds_email', 'email'],
+                ['ds_senha', 'senha']
+            ]
+        });
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+
+app.post('/adm', async (req, resp) => {
+    try {
+        
+        let { email, senha } = req.body;
+
+        let b = await db.infod_ssc_adm.create({
+            ds_email: email,
+            ds_senha: senha
+        })
+        resp.send(b);
+    
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
+})
+// Adm
+
 app.get('/produto', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_produto.findAll({ order: [[ 'id_produto', 'desc' ]] });
+        let r = await db.infod_ssc_produto.findAll({
+            order: [[ 'nm_produto', 'asc' ]],
+            attributes: [
+                ['nm_produto', 'nome do produto'],
+                ['vl_produto', 'preço'],
+                ['nm_categoria', 'categoria'],
+                ['ds_avaliacao', 'avaliacao'],
+                ['ds_produto', 'descricao'],
+                ['qtd_disponivel_estoque', 'estoque'],
+                ['ds_imagem', 'imagem']
+            ]
+        });
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -285,7 +329,18 @@ app.get('/v3/produtos', async (req, resp) => {
 
 app.get('/pedido', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_pedido.findAll( );
+        let r = await db.infod_ssc_pedido.findAll({
+            order: [[ 'id_venda', 'asc' ]],
+            attributes: [
+                ['id_venda', 'id da venda'],
+                ['id_item', 'id do item'],
+                ['vl_pedido', 'valor do pedido'],
+                ['dt_pedido', 'data do pedido'],
+                ['ds_entregue', 'descricao da entrega'],
+                ['ds_acaminho', 'descricao do caminho'],
+                ['ds_preparando', 'descricao do preparo']
+            ]
+        });
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -542,7 +597,14 @@ app.delete('/endereco/:id', async (req, resp) => {
 
 app.get('/item', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_item.findAll( );
+        let r = await db.infod_ssc_item.findAll({
+            order: [[ 'vl_item', 'asc' ]],
+            attributes: [
+                ['id_produto', 'id_do_produto'],
+                ['vl_item', 'valor'],
+                ['qtd_produto', 'quantidade_do_produto']
+            ]
+        }); 
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -555,7 +617,7 @@ app.post('/item', async (req, resp) => {
         let { id_do_produto, valor, quantidade_do_produto} = req.body;
 
         let j = await db.infod_ssc_item.create({
-
+            
             id_produto: id_do_produto,
             vl_item: valor,
             qtd_produto: quantidade_do_produto

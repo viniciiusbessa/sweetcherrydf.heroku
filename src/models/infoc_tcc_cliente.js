@@ -1,7 +1,7 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoc_tdv_cliente extends Model {
+export default class infoc_tcc_cliente extends Model {
   static init(sequelize, DataTypes) {
   super.init({
     id_cliente: {
@@ -10,37 +10,45 @@ export default class infoc_tdv_cliente extends Model {
       allowNull: false,
       primaryKey: true
     },
+    id_endereco: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'infoc_tcc_endereco',
+        key: 'id_endereco'
+      }
+    },
     nm_cliente: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_cpf: {
-      type: DataTypes.STRING(15),
+    dt_nascimento: {
+      type: DataTypes.DATEONLY,
+      allowNull: true
+    },
+    nr_celular: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
     ds_email: {
-      type: DataTypes.STRING(250),
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    nr_contato: {
-      type: DataTypes.STRING(15),
+    ds_genero: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_senha: {
-      type: DataTypes.STRING(50),
+    nr_cpf: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    dt_nascimento: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    ds_codigo_rec: {
-      type: DataTypes.STRING(200),
+    qtd_compra: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoc_tdv_cliente',
+    tableName: 'infoc_tcc_cliente',
     timestamps: false,
     indexes: [
       {
@@ -51,8 +59,15 @@ export default class infoc_tdv_cliente extends Model {
           { name: "id_cliente" },
         ]
       },
+      {
+        name: "id_endereco",
+        using: "BTREE",
+        fields: [
+          { name: "id_endereco" },
+        ]
+      },
     ]
   });
-  return infoc_tdv_cliente;
+  return infoc_tcc_cliente;
   }
 }

@@ -1,24 +1,16 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infob_mw_usuario extends Model {
+export default class infod_omn_candidato extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_usuario: {
+    id_candidato: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    nm_usuario: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    nm_sobrenome: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    nm_username: {
+    nm_candidato: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
@@ -30,33 +22,37 @@ export default class infob_mw_usuario extends Model {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_genero: {
+    ds_sexo: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    ds_nacionalidade: {
+      type: DataTypes.STRING(255),
+      allowNull: true
+    },
+    ds_telefone: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
     dt_nascimento: {
-      type: DataTypes.DATEONLY,
+      type: DataTypes.DATE,
       allowNull: true
     },
-    ds_localizacao: {
-      type: DataTypes.STRING(500),
+    ds_estado_civil: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_redes_sociais: {
-      type: DataTypes.STRING(500),
+    ds_localidade: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_foto: {
-      type: DataTypes.STRING(1000),
-      allowNull: true
-    },
-    ds_codigo_rec: {
+    id_curriculo: {
       type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infob_mw_usuario',
+    tableName: 'infod_omn_candidato',
     timestamps: false,
     indexes: [
       {
@@ -64,11 +60,18 @@ export default class infob_mw_usuario extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_usuario" },
+          { name: "id_candidato" },
+        ]
+      },
+      {
+        name: "id_curriculo",
+        using: "BTREE",
+        fields: [
+          { name: "id_curriculo" },
         ]
       },
     ]
   });
-  return infob_mw_usuario;
+  return infod_omn_candidato;
   }
 }

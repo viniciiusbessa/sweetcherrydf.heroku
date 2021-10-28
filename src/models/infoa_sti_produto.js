@@ -30,10 +30,6 @@ export default class infoa_sti_produto extends Model {
         key: 'id_categoria'
       }
     },
-    bl_possui_variacao: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
-    },
     ds_descricao: {
       type: DataTypes.STRING(255),
       allowNull: true

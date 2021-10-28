@@ -1,62 +1,58 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infob_mw_usuario extends Model {
+export default class tb_produto extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_usuario: {
+    id_produto: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    nm_usuario: {
+    tp_peca: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    nm_sobrenome: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    nm_username: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    ds_email: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    ds_senha: {
-      type: DataTypes.STRING(255),
+    vl_preco_fb: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
     ds_genero: {
       type: DataTypes.STRING(255),
       allowNull: true
     },
-    dt_nascimento: {
-      type: DataTypes.DATEONLY,
+    bt_disponivel: {
+      type: DataTypes.BOOLEAN,
       allowNull: true
     },
-    ds_localizacao: {
-      type: DataTypes.STRING(500),
+    ds_tamanho: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_redes_sociais: {
-      type: DataTypes.STRING(500),
+    ds_cores: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_foto: {
-      type: DataTypes.STRING(1000),
+    ds_fornecedor: {
+      type: DataTypes.STRING(255),
       allowNull: true
     },
-    ds_codigo_rec: {
+    qtd_produto: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    qtd_demanda: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    qtd_pedidos: {
       type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infob_mw_usuario',
+    tableName: 'tb_produto',
     timestamps: false,
     indexes: [
       {
@@ -64,11 +60,11 @@ export default class infob_mw_usuario extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_usuario" },
+          { name: "id_produto" },
         ]
       },
     ]
   });
-  return infob_mw_usuario;
+  return tb_produto;
   }
 }

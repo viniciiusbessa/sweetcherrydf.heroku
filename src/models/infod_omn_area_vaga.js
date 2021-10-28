@@ -1,34 +1,22 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infob_apn_tb_user extends Model {
+export default class infod_omn_area_vaga extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    ID_USER: {
+    id_area_vaga: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    NM_USER: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    NM_SOBRENOME: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    DS_EMAIL: {
-      type: DataTypes.STRING(100),
-      allowNull: true
-    },
-    ds_senha: {
-      type: DataTypes.STRING(100),
+    nm_area_vaga: {
+      type: DataTypes.STRING(255),
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infob_apn_tb_user',
+    tableName: 'infod_omn_area_vaga',
     timestamps: false,
     indexes: [
       {
@@ -36,11 +24,11 @@ export default class infob_apn_tb_user extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "ID_USER" },
+          { name: "id_area_vaga" },
         ]
       },
     ]
   });
-  return infob_apn_tb_user;
+  return infod_omn_area_vaga;
   }
 }
