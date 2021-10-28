@@ -196,28 +196,39 @@ function getOrderCriteria(criteria) {
 }
 
 app.get('/produtos', async (req, resp) => {
-    let orderCriteria = getOrderCriteria(req.query.ordenacao);
-
-    let products = await db.infod_ssc_produto.findAll({
-        order: [
-        orderCriteria
-        ]
-    })
-
-    products = products.map(item => {
-        return {
-            id: item.id_produto,
-            produto: item.nm_produto,
-            preco: item.vl_produto,
-            categoria: item.nm_categoria,
-            descricao: item.ds_produto,
-            avaliacao: item.ds_avaliacao,
-            estoque: item.qtd_disponivel_estoque,
-            imagem: item.ds_imagem
+    try {
+        let produtos;
+        if (req.query.categoria) {
+            produtos = await db.infod_ssc_produto.findAll({ 
+                where: {
+                    nm_categoria: req.query.categoria
+                },
+                order: [[ 'id_produto', 'desc' ]] 
+            });
+        } else {
+            produtos = await db.infod_ssc_produto.findAll({
+                order: [[ 'id_produto', 'desc' ]] 
+            });
         }
-    })
 
-    resp.send(products);
+        
+        produtos = produtos.map(item => {
+            return {
+                id: item.id_produto,
+                produto: item.nm_produto,
+                preco: item.vl_produto,
+                categoria: item.nm_categoria,
+                descricao: item.ds_produto,
+                avaliacao: item.ds_avaliacao,
+                estoque: item.qtd_disponivel_estoque,
+                imagem: item.ds_imagem
+            }
+        })
+        resp.send(produtos);
+
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
 })
 
 
