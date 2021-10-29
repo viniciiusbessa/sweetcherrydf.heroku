@@ -279,7 +279,7 @@ app.get('/v2/produtos', async (req, resp) => {
       },
       attributes: [
         ['id_produto', 'id'],
-        ['nm_produto', 'nome'],
+        ['nm_produto', 'produto'],
         ['ds_produto', 'descricao'],
         ['vl_produto', 'preco']
       ]
