@@ -230,41 +230,6 @@ app.put('/produto/:id', async (req, resp) => {
 
 
 
-function getOrderCriteria(criteria) {
-    switch (criteria) {
-        case 'Menor Preço': return ['vl_produto', 'asc'];
-        case 'Maior Preço': return ['vl_produto', 'desc'];
-        case 'A - Z': return ['nm_produto', 'asc'];
-        case 'Z - A': return ['nm_produto', 'desc'];
-
-        default: return ['vl_produto', 'asc'];
-    }
-}
-
-app.get('/produtos', async (req, resp) => {
-    let orderCriteria = getOrderCriteria(req.query.ordenacao);
-
-    let products = await db.insf_tb_produto.findAll({
-        order: [orderCriteria],
-        attributes: [
-            ['id_produto', 'id'],
-            ['nm_produto', 'produto'],
-            ['vl_produto', 'preco'],
-            ['nm_categoria', 'categoria'],
-            ['ds_avaliacao', 'avaliacao'],
-            ['ds_produto', 'descricao'],
-            ['qtd_disponivel_estoque', 'estoque'],
-            ['ds_imagem', 'imagem']
-        ]
-    });
-
-    resp.send(products);
-})
-
-
-
-
-
 
 app.get('/produtos', async (req, resp) => {
     try {
