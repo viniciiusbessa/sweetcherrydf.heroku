@@ -5,7 +5,7 @@ import enderecoController from './controller/enderecoController.js'
 import itemController from './controller/itemController.js'
 import pedidoController from './controller/pedidoController.js'
 import produtoController from './controller/produtoController.js'
-import recuperarsenhaController from './controller/recuperarsenhaController.js'
+// import recuperarsenhaController from './controller/recuperarsenhaController.js'
 import vendaController from './controller/vendaController.js'
 
 import express from 'express'
@@ -22,7 +22,7 @@ server.use('/endereco', enderecoController);
 server.use('/item', itemController);
 server.use('/pedido', pedidoController);
 server.use('/produto', produtoController);
-server.use('/recuperacaodesenha', recuperarsenhaController);
+// server.use('/recuperacaodesenha', recuperarsenhaController);
 server.use('/venda', vendaController);
 
 server.listen(process.env.PORT, 
