@@ -147,10 +147,11 @@ app.post('/adm', async (req, resp) => {
 app.get('/produto', async (req, resp) => {
     try {
         let r = await db.infod_ssc_produto.findAll({
-            order: [[ 'nm_produto', 'asc' ]],
+            order: [[ 'id_produto', 'desc' ]],
             attributes: [
-                ['nm_produto', 'nome do produto'],
-                ['vl_produto', 'preço'],
+                ['id_produto', 'id'],
+                ['nm_produto', 'produto'],
+                ['vl_produto', 'preco'],
                 ['nm_categoria', 'categoria'],
                 ['ds_avaliacao', 'avaliacao'],
                 ['ds_produto', 'descricao'],
@@ -193,6 +194,7 @@ app.delete('/produto/:id', async (req, resp) => {
         let { id } = req.params;
         let r = await db.infod_ssc_produto.destroy({ where: { id_produto: id } })
         resp.sendStatus(200);
+        
     } catch (e) {
         resp.send({ erro: e.toString() })
     }
@@ -227,6 +229,7 @@ app.put('/produto/:id', async (req, resp) => {
 
 
 
+
 function getOrderCriteria(criteria) {
     switch (criteria) {
         case 'Menor Preço': return ['vl_produto', 'asc'];
@@ -236,8 +239,32 @@ function getOrderCriteria(criteria) {
 
         default: return ['vl_produto', 'asc'];
     }
-
 }
+
+app.get('/produtos', async (req, resp) => {
+    let orderCriteria = getOrderCriteria(req.query.ordenacao);
+
+    let products = await db.insf_tb_produto.findAll({
+        order: [orderCriteria],
+        attributes: [
+            ['id_produto', 'id'],
+            ['nm_produto', 'produto'],
+            ['vl_produto', 'preco'],
+            ['nm_categoria', 'categoria'],
+            ['ds_avaliacao', 'avaliacao'],
+            ['ds_produto', 'descricao'],
+            ['qtd_disponivel_estoque', 'estoque'],
+            ['ds_imagem', 'imagem']
+        ]
+    });
+
+    resp.send(products);
+})
+
+
+
+
+
 
 app.get('/produtos', async (req, resp) => {
     try {
@@ -247,7 +274,17 @@ app.get('/produtos', async (req, resp) => {
                 where: {
                     nm_categoria: req.query.categoria
                 },
-                order: [[ 'id_produto', 'desc' ]] 
+                order: [[ 'id_produto', 'desc' ]],
+                attributes: [
+                    ['id_produto', 'id'],
+                    ['nm_produto', 'produto'],
+                    ['vl_produto', 'preco'],
+                    ['nm_categoria', 'categoria'],
+                    ['ds_avaliacao', 'avaliacao'],
+                    ['ds_produto', 'descricao'],
+                    ['qtd_disponivel_estoque', 'estoque'],
+                    ['ds_imagem', 'imagem']
+                ] 
             });
         } else {
             produtos = await db.infod_ssc_produto.findAll({
@@ -255,19 +292,6 @@ app.get('/produtos', async (req, resp) => {
             });
         }
 
-        
-        produtos = produtos.map(item => {
-            return {
-                id: item.id_produto,
-                produto: item.nm_produto,
-                preco: item.vl_produto,
-                categoria: item.nm_categoria,
-                descricao: item.ds_produto,
-                avaliacao: item.ds_avaliacao,
-                estoque: item.qtd_disponivel_estoque,
-                imagem: item.ds_imagem
-            }
-        })
         resp.send(produtos);
 
     } catch (e) {
