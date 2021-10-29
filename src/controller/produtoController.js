@@ -94,43 +94,9 @@ app.put('/:id', async (req, resp) => {
 
 
 
-function getOrderCriteria(criteria) {
-    switch (criteria) {
-        case 'Menor Preço': return ['vl_produto', 'asc'];
-        case 'Maior Preço': return ['vl_produto', 'desc'];
-        case 'A - Z': return ['nm_produto', 'asc'];
-        case 'Z - A': return ['nm_produto', 'desc'];
-
-        default: return ['vl_produto', 'asc'];
-    }
-}
-
-app.get('/produtos', async (req, resp) => {
-    let orderCriteria = getOrderCriteria(req.query.ordenacao);
-
-    let products = await db.insf_tb_produto.findAll({
-        order: [orderCriteria],
-        attributes: [
-            ['id_produto', 'id'],
-            ['nm_produto', 'produto'],
-            ['vl_produto', 'preco'],
-            ['nm_categoria', 'categoria'],
-            ['ds_avaliacao', 'avaliacao'],
-            ['ds_produto', 'descricao'],
-            ['qtd_disponivel_estoque', 'estoque'],
-            ['ds_imagem', 'imagem']
-        ]
-    });
-
-    resp.send(products);
-})
 
 
-
-
-
-
-app.get('/produtos', async (req, resp) => {
+app.get('/cate', async (req, resp) => {
     try {
         let produtos;
         if (req.query.categoria) {
@@ -168,7 +134,7 @@ app.get('/produtos', async (req, resp) => {
 
 
 
-app.get('/v2/produtos', async (req, resp) => {
+app.get('/v2', async (req, resp) => {
     const produtos = await db.infod_ssc_produto.findAll({
       where: {
         [Op.or]: [
@@ -188,7 +154,7 @@ app.get('/v2/produtos', async (req, resp) => {
 });
   
 
-app.get('/v3/produtos', async (req, resp) => {
+app.get('/v3', async (req, resp) => {
     let page = req.query.page || 0;
     if (page <= 0) page = 1;
 
