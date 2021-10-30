@@ -128,30 +128,6 @@ app.get('/cate', async (req, resp) => {
         resp.send({ erro: e.toString() })
     }
 })
-
-
-
-
-
-
-app.get('/v2', async (req, resp) => {
-    const produtos = await db.infod_ssc_produto.findAll({
-      where: {
-        [Op.or]: [
-          { 'nm_produto':  { [Op.like]:      `%${req.query.filtro}%` } },
-          { 'ds_produto':  { [Op.substring]:  `${req.query.filtro}` } }
-        ]
-      },
-      attributes: [
-        ['id_produto', 'id'],
-        ['nm_produto', 'nome'],
-        ['ds_produto', 'descricao'],
-        ['vl_produto', 'preco']
-      ]
-    })
-  
-    resp.send(produtos);
-});
   
 
 app.get('/v3', async (req, resp) => {
@@ -162,6 +138,9 @@ app.get('/v3', async (req, resp) => {
     const skipItems    = (page-1) * itemsPerPage;
 
     const produtos = await db.infod_ssc_produto.findAll({
+        where: {
+            nm_categoria: req.query.categoria
+        },
         limit: itemsPerPage,
         offset: skipItems,
         order: [[ 'nm_produto', 'asc' ]],
@@ -182,10 +161,10 @@ app.get('/v3', async (req, resp) => {
         });
 
         resp.send({
-        items: produtos,
-        total: total.qtd,
-        totalPaginas: Math.ceil(total.qtd/6),
-        pagina: Number(page)
+            items: produtos,
+            total: total.qtd,
+            totalPaginas: Math.ceil(total.qtd/6),
+            pagina: Number(page)
         });
 })
 
