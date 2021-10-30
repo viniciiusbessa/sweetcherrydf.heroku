@@ -124,8 +124,8 @@ app.post('/cadastro', async (req, resp) => {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
-        if (email.includes('@')) {
-            return resp.send('Ok')
+        if (!email.includes('@')) {
+            return resp.send({ erro: 'Insira um email válido'})
         }
 
         let b = await db.infod_ssc_cliente.create({
