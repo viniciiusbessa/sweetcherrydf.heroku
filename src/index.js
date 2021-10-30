@@ -26,4 +26,4 @@ server.use('/produto', produtoController);
 server.use('/venda', vendaController);
 
 server.listen(process.env.PORT, 
-               x=> console.log(`Subiu na lá na porta ${process.env.PORT}meu nobre`))
+               x=> console.log(`Subiu lá na porta ${process.env.PORT}meu nobre`))
