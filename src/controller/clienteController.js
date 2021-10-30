@@ -10,7 +10,17 @@ const app = Router();
 
 app.get('/', async (req, resp) => {
     try {
-        let r = await db.infod_ssc_cliente.findAll( );
+        let r = await db.infod_ssc_cliente.findAll({
+            attributes: [
+                ['id_endereco', 'Endereco'],
+                ['nm_cliente', 'Nome do cliente'],
+                ['ds_cpf', 'CPF'],
+                ['dt_nascimento', 'Data de nascimento'],
+                ['nr_telefone', 'Número de telefone'],
+                ['ds_email', 'Email'],
+                ['ds_senha', 'Senha']
+            ]
+        });
         resp.send(r);
     } catch (e) {
         resp.send({ erro: e.toString() })
@@ -20,10 +30,10 @@ app.get('/', async (req, resp) => {
 app.post('/', async (req, resp) => {
     try {
         
-        let { endereco, nome_cliente, cpf, dtnascimento, telefone, email, senha } = req.body;
+        let { id_do_endereco, nome_cliente, cpf, dtnascimento, telefone, email, senha } = req.body;
 
         let b = await db.infod_ssc_cliente.create({
-            id_endereco: endereco,
+            id_endereco: id_do_endereco,
             nm_cliente: nome_cliente,
             ds_cpf: cpf,
             dt_nascimento: dtnascimento,
