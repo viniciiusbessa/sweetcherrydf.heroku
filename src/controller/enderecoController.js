@@ -46,7 +46,7 @@ app.put('/:id', async (req, resp) => {
                 nr_endereco: numero_do_endereco,
                 ds_cep: descricao_do_cep,
                 nm_cidade: nome_cidade,
-                ds_complemeno: complemento
+                ds_complemento: complemento
                 
             },
             {
