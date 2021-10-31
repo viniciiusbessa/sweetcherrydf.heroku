@@ -103,7 +103,7 @@ app.post('/login', async (req, resp) => {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
-        if (r === null) {
+        if (!email) {
             return resp.send({ erro: 'Credenciais inválidas.' })
         }
     
