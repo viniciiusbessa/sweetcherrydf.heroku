@@ -7,8 +7,27 @@ import { Router } from 'express'
 
 const app = Router();
 
+app.get('/', async (req, resp) => {
+    try {
+        let r = await db.insf_tb_usuario.findAll({
+            attributes: [
+                ['id_usuario', 'id'],
+                ['nm_usuario', 'nome'],
+                ['ds_email', 'email'],
+                ['ds_codigo_rec', 'codigo'],
+                ['ds_senha', 'senha'],
+                ['dt_inclusao', 'datainclusao']
+            ]
+        });
+        resp.send(r);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
+
  app.post('/login', async (req, resp) => {
-    const user = await db.infod_ssc_cliente.findOne({
+    const user = await db.insf_tb_usuario.findOne({
         where: {
             ds_email: req.body.email,
             ds_senha: req.body.senha
@@ -98,6 +117,18 @@ const app = Router();
 
 // resp.send({ status: 'ok', mensagem: 'Senha alterada.' });
 // })  
+
+
+app.delete('/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.insf_tb_usuario.destroy({ where: { id_usuario: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
+    }
+})
+
 
 function getRandomInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
