@@ -22,7 +22,7 @@ server.use('/endereco', enderecoController);
 server.use('/item', itemController);
 server.use('/pedido', pedidoController);
 server.use('/produto', produtoController);
-server.use('/recuperacaodesenha', recuperarsenhaController);
+server.use('/recuperarsenha', recuperarsenhaController);
 server.use('/venda', vendaController);
 
 server.listen(process.env.PORT, 
