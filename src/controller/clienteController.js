@@ -99,11 +99,11 @@ app.post('/login', async (req, resp) => {
             }
         )
 
-        if (email === "" && senha === "") {
+        if (email === "" || senha === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
-        if (!email) {
+        if (email !== null || senha !== null) {
             return resp.send({ erro: 'Credenciais inválidas.' })
         }
     
