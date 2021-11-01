@@ -120,7 +120,7 @@ app.post('/cadastro', async (req, resp) => {
         
         let  { nome, email, senha } = req.body;
 
-        if (nome === "" && email === "" && senha === "") {
+        if (nome === "" || email === "" || senha === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
