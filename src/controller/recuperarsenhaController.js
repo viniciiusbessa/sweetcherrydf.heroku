@@ -5,8 +5,8 @@ import enviarEmail from '../email.js';
 import  Sequelize  from 'sequelize';
 const { Op, col, fn } = Sequelize;
 
-import { Router } from 'express'
-
+import express from 'express'
+const Router = express.Router
 const app = Router();
 
 app.get('/', async (req, resp) => {
