@@ -12,12 +12,14 @@ app.get('/', async (req, resp) => {
     try {
         let r = await db.infod_ssc_cliente.findAll({
             attributes: [
+                ['id_cliente', 'id'],
                 ['id_endereco', 'Endereco'],
                 ['nm_cliente', 'Nome do cliente'],
                 ['ds_cpf', 'CPF'],
                 ['dt_nascimento', 'Data de nascimento'],
                 ['nr_telefone', 'Número de telefone'],
                 ['ds_email', 'Email'],
+                ['ds_codigo', 'Codigo'],
                 ['ds_senha', 'Senha']
             ]
         });
@@ -103,7 +105,7 @@ app.post('/login', async (req, resp) => {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
-        if (email !== null || senha !== null) {
+        if (!email || !senha) {
             return resp.send({ erro: 'Credenciais inválidas.' })
         }
     
@@ -120,6 +122,8 @@ app.post('/cadastro', async (req, resp) => {
         
         let  { nome, email, senha } = req.body;
 
+        let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
+
         if (nome === "" || email === "" || senha === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
@@ -127,11 +131,12 @@ app.post('/cadastro', async (req, resp) => {
         if (!email.includes('@')) {
             return resp.send({ erro: 'Insira um email válido'})
         }
+        
 
         let b = await db.infod_ssc_cliente.create({
             nm_cliente: nome,
             ds_email: email,
-            ds_senha: crypto.SHA256(senha).toString(crypto.enc.Base64)
+            ds_senha: cryptoSenha
         })
 
         resp.send(b);

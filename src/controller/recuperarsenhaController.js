@@ -9,64 +9,9 @@ import express from 'express'
 const Router = express.Router
 const app = Router();
 
-app.get('/', async (req, resp) => {
-    try {
-        let r = await db.insf_tb_usuario.findAll({
-            attributes: [
-                ['id_usuario', 'id'],
-                ['nm_usuario', 'nome'],
-                ['ds_email', 'email'],
-                ['ds_codigo_rec', 'codigo'],
-                ['ds_senha', 'senha'],
-                ['dt_inclusao', 'datainclusao']
-            ]
-        });
-        resp.send(r);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
-
-app.post('/cadastro', async (req, resp) => {
-    try {
-        
-        let  { nome, email, senha } = req.body;
-
-        let b = await db.insf_tb_usuario.create({
-            nm_usuario: nome,
-            ds_email: email,
-            ds_senha: senha,
-            dt_inclusao: new Date()
-        })
-
-        resp.send(b);
-    
-} catch(b) {
-    resp.send({ erro: b.toString() })
-}
-})
-
-
- app.post('/login', async (req, resp) => {
-    const user = await db.insf_tb_usuario.findOne({
-        where: {
-            ds_email: req.body.email,
-            ds_senha: req.body.senha
-        }
-    })
-
-    if (!user) {
-        resp.send({ status: 'erro', mensagem: 'Credenciais inválidas.' });
-
-    } else {
-        resp.send({ status: 'ok', nome: user.nm_usuario });
-    }
-
- })
-
 
 app.post('/esqueciasenha', async (req, resp) => {
-    const user = await db.insf_tb_usuario.findOne({
+    const user = await db.infod_ssc_cliente.findOne({
         where: {
             ds_email: req.body.email   
         }
@@ -77,10 +22,10 @@ app.post('/esqueciasenha', async (req, resp) => {
     }
 
     let code = getRandomInteger(1000, 9999);
-    await db.insf_tb_usuario.update({
-        ds_codigo_rec: code
+    await db.infod_ssc_cliente.update({
+        ds_codigo: code
     }, {
-        where: { id_usuario: user.id_usuario }
+        where: { id_cliente: user.id_cliente }
     })
 
     enviarEmail(user.ds_email, 'Recuperação de Senha', `
@@ -94,7 +39,7 @@ app.post('/esqueciasenha', async (req, resp) => {
 
 
 app.post('/validarcodigo', async (req, resp) => {
-    const user = await db.insf_tb_usuario.findOne({
+    const user = await db.infod_ssc_cliente.findOne({
         where: {
             ds_email: req.body.email   
         }
@@ -104,7 +49,7 @@ app.post('/validarcodigo', async (req, resp) => {
         resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
     }
 
-    if (user.ds_codigo_rec !== req.body.codigo) {
+    if (user.ds_codigo !== req.body.codigo) {
         resp.send({ status: 'erro', mensagem: 'Código inválido.' });
     }
 
@@ -112,8 +57,8 @@ app.post('/validarcodigo', async (req, resp) => {
 
 })
 
-app.put('/resetSenha', async (req, resp) => {
-    const user = await db.insf_tb_usuario.findOne({
+app.put('/resetsenha', async (req, resp) => {
+    const user = await db.infod_ssc_cliente.findOne({
         where: {
             ds_email: req.body.email   
         }
@@ -124,31 +69,20 @@ app.put('/resetSenha', async (req, resp) => {
     }
 
 
-    if (user.ds_codigo_rec !== req.body.codigo ||
-        user.ds_codigo_rec === '') {
+    if (user.ds_codigo !== req.body.codigo ||
+        user.ds_codigo === '') {
         resp.send({ status: 'erro', mensagem: 'Código inválido.' });
     }
 
-    await db.insf_tb_usuario.update({
+    await db.infod_ssc_cliente.update({
         ds_senha: req.body.novaSenha,
-        ds_codigo_rec: ''
+        ds_codigo: ''
     }, {
-        where: { id_usuario: user.id_usuario }
+        where: { id_cliente: user.id_cliente }
     })
 
     resp.send({ status: 'ok', mensagem: 'Senha alterada.' });
 })  
-
-
-app.delete('/:id', async (req, resp) => {
-    try {
-        let { id } = req.params;
-        let r = await db.insf_tb_usuario.destroy({ where: { id_usuario: id } })
-        resp.sendStatus(200);
-    } catch (e) {
-        resp.send({ erro: e.toString() })
-    }
-})
 
 
 function getRandomInteger(min, max) {
