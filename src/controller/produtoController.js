@@ -169,4 +169,21 @@ app.get('/v3', async (req, resp) => {
 })
 
 
+app.get('busca', async(req, resp) => {
+    try {
+        let search = req.query.search;
+        let r = await db.infod_ssc_produto.findAll(
+            { where: {
+                [Op.or]: [
+                    { 'nm_produto': {[Op.like]: `%${search}%` }},
+                    { 'nm_produto': {[Op.like]: `%${search}%` }},
+                ]
+            } }
+        )
+    } catch (error) {
+        
+    }
+})
+
+
 export default app;
