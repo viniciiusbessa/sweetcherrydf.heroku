@@ -5,15 +5,16 @@ import enviarEmail from '../email.js';
 import  Sequelize  from 'sequelize';
 const { Op, col, fn } = Sequelize;
 
-import { Router } from 'express'
-
+import express from 'express'
+const Router = express.Router
 const app = Router();
 
 app.post('/enviar', async (req, resp) => {
     try {
+        const { para, assunto, mensagem } = req.body;
 
         const response = await
-        enviarEmail(req.body.para, req.body.assunto, req.body.mensagem);
+        enviarEmail(para, assunto, mensagem);
 
         resp.send(response);
 
