@@ -12,7 +12,7 @@ const sender = nodemailer.createTransport({
 
 async function enviarEmail(para, assunto, mensagem) {
     const response = await sender.sendMail({
-        from: '"TCC INSF" <mailing.tcc.info@acaonsfatima.org.br>',
+        from: '"Sweet Cherry" <sweetcherryssc7@gmail.com>',
         to: para,
         subject: assunto,
         html: mensagem

@@ -65,7 +65,7 @@ app.post('/cadastro', async (req, resp) => {
  })
 
 
-app.post('/esqueciASenha', async (req, resp) => {
+app.post('/esqueciasenha', async (req, resp) => {
     const user = await db.insf_tb_usuario.findOne({
         where: {
             ds_email: req.body.email   

@@ -11,10 +11,9 @@ const app = Router();
 
 app.post('/enviar', async (req, resp) => {
     try {
-        const { para, assunto, mensagem } = req.body;
 
         const response = await
-        enviarEmail(para, assunto, mensagem);
+        enviarEmail(req.body.para, req.body.assunto, req.body.mensagem);
 
         resp.send(response);
 

@@ -8,6 +8,8 @@ import produtoController from './controller/produtoController.js'
 import recuperarsenhaController from './controller/recuperarsenhaController.js'
 import vendaController from './controller/vendaController.js'
 
+
+
 import express from 'express'
 import cors from 'cors'
 
@@ -17,7 +19,7 @@ server.use(express.json());
 
 server.use('/adm', admController);
 server.use('/cliente', clienteController);
-server.use('/email', emailController);
+server.use('/enviaremail', emailController);
 server.use('/endereco', enderecoController);
 server.use('/item', itemController);
 server.use('/pedido', pedidoController);
