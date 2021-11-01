@@ -93,7 +93,7 @@ app.post('/esqueciasenha', async (req, resp) => {
 })
 
 
-app.post('/validarCodigo', async (req, resp) => {
+app.post('/validarcodigo', async (req, resp) => {
     const user = await db.insf_tb_usuario.findOne({
         where: {
             ds_email: req.body.email   
@@ -112,32 +112,32 @@ app.post('/validarCodigo', async (req, resp) => {
 
 })
 
-// app.put('/resetSenha', async (req, resp) => {
-//     const user = await db.insf_tb_usuario.findOne({
-//         where: {
-//             ds_email: req.body.email   
-//         }
-//     });
+app.put('/resetSenha', async (req, resp) => {
+    const user = await db.insf_tb_usuario.findOne({
+        where: {
+            ds_email: req.body.email   
+        }
+    });
 
-//     if (!user) {
-//         resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
-//     }
+    if (!user) {
+        resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
+    }
 
 
-//     if (user.ds_codigo_rec !== req.body.codigo ||
-//         user.ds_codigo_rec === '') {
-//         resp.send({ status: 'erro', mensagem: 'Código inválido.' });
-//     }
+    if (user.ds_codigo_rec !== req.body.codigo ||
+        user.ds_codigo_rec === '') {
+        resp.send({ status: 'erro', mensagem: 'Código inválido.' });
+    }
 
-//     await db.insf_tb_usuario.update({
-//         ds_senha: req.body.novaSenha,
-//         ds_codigo_rec: ''
-//     }, {
-//         where: { id_usuario: user.id_usuario }
-//     })
+    await db.insf_tb_usuario.update({
+        ds_senha: req.body.novaSenha,
+        ds_codigo_rec: ''
+    }, {
+        where: { id_usuario: user.id_usuario }
+    })
 
-//     resp.send({ status: 'ok', mensagem: 'Senha alterada.' });
-// })  
+    resp.send({ status: 'ok', mensagem: 'Senha alterada.' });
+})  
 
 
 app.delete('/:id', async (req, resp) => {
