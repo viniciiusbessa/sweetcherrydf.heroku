@@ -11,50 +11,59 @@ const app = Router();
 
 
 app.post('/esqueciasenha', async (req, resp) => {
-    const user = await db.infod_ssc_cliente.findOne({
-        where: {
-            ds_email: req.body.email   
+    try {
+        const user = await db.infod_ssc_cliente.findOne({
+            where: {
+                ds_email: req.body.email   
+            }
+        });
+
+        if (!user) {
+            return resp.send({ erro: 'Email inválido' })
         }
-    });
 
-    if (!user) {
-        resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
+        let code = getRandomInteger(1000, 9999);
+        await db.infod_ssc_cliente.update({
+            ds_codigo: code
+        }, {
+            where: { id_cliente: user.id_cliente }
+        })
+
+        enviarEmail(user.ds_email, 'Recuperação de Senha', `
+            <h3> Recuperação de Senha </h3>
+            <p> Você solicitou a recuperação de senha da sua conta. </p>
+            <p> Entre com o código <b>${code}</b> para prosseguir com a recuperação.
+        `)
+
+        resp.send(user);
+
+    } catch(b) {
+        resp.send({ erro: b.toString() })
     }
-
-    let code = getRandomInteger(1000, 9999);
-    await db.infod_ssc_cliente.update({
-        ds_codigo: code
-    }, {
-        where: { id_cliente: user.id_cliente }
-    })
-
-    enviarEmail(user.ds_email, 'Recuperação de Senha', `
-        <h3> Recuperação de Senha </h3>
-        <p> Você solicitou a recuperação de senha da sua conta. </p>
-        <p> Entre com o código <b>${code}</b> para prosseguir com a recuperação.
-    `)
-
-    resp.send({ status: 'ok' });
 })
 
 
 app.post('/validarcodigo', async (req, resp) => {
-    const user = await db.infod_ssc_cliente.findOne({
-        where: {
-            ds_email: req.body.email   
+    try {
+        const user = await db.infod_ssc_cliente.findOne({
+            where: {
+                ds_email: req.body.email   
+            }
+        });
+
+        if (!user) {
+            return resp.send({ erro: 'Email inválido' })
         }
-    });
 
-    if (!user) {
-        resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
+        if (user.ds_codigo !== req.body.codigo) {
+            return resp.send({ erro: 'Código inválido' })
+        }
+
+        resp.send(user);
+
+    } catch(b) {
+        resp.send({ erro: b.toString() })
     }
-
-    if (user.ds_codigo !== req.body.codigo) {
-        resp.send({ status: 'erro', mensagem: 'Código inválido.' });
-    }
-
-    resp.send({ status: 'ok', mensagem: 'Código validado.' });
-
 })
 
 app.put('/resetsenha', async (req, resp) => {
