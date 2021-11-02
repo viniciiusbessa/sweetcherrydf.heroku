@@ -2,6 +2,8 @@ import db from '../db.js'
 
 import enviarEmail from '../email.js';
 
+import crypto from 'crypto-js'
+
 import  Sequelize  from 'sequelize';
 const { Op, col, fn } = Sequelize;
 
@@ -67,30 +69,37 @@ app.post('/validarcodigo', async (req, resp) => {
 })
 
 app.put('/resetsenha', async (req, resp) => {
-    const user = await db.infod_ssc_cliente.findOne({
-        where: {
-            ds_email: req.body.email   
+    try {
+        let cryptoSenha = crypto.SHA256(req.body.novaSenha).toString(crypto.enc.Base64);
+
+        const user = await db.infod_ssc_cliente.findOne({
+            where: {
+                ds_email: req.body.email   
+            }
+        });
+
+        if (!user) {
+            return resp.send({ erro: 'Email inválido' })
         }
-    });
 
-    if (!user) {
-        resp.send({ status: 'erro', mensagem: 'E-mail inválido.' });
+
+        if (user.ds_codigo !== req.body.codigo ||
+            user.ds_codigo === '') {
+                return resp.send({ erro: 'Código inválido' })
+        }
+
+        await db.infod_ssc_cliente.update({
+            ds_senha: cryptoSenha,
+            ds_codigo: ''
+        }, {
+            where: { id_cliente: user.id_cliente }
+        })
+
+        resp.send(user);
+
+    } catch(b) {
+        resp.send({ erro: b.toString() })
     }
-
-
-    if (user.ds_codigo !== req.body.codigo ||
-        user.ds_codigo === '') {
-        resp.send({ status: 'erro', mensagem: 'Código inválido.' });
-    }
-
-    await db.infod_ssc_cliente.update({
-        ds_senha: req.body.novaSenha,
-        ds_codigo: ''
-    }, {
-        where: { id_cliente: user.id_cliente }
-    })
-
-    resp.send({ status: 'ok', mensagem: 'Senha alterada.' });
 })  
 
 
