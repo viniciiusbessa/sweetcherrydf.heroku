@@ -1,8 +1,8 @@
 import db from '../db.js'
 
 
-// import  Sequelize, { or }  from 'sequelize';
-// const { Op, col, fn } = Sequelize;
+import  Sequelize from 'sequelize';
+const { Op, col, fn } = Sequelize;
 
 import express from 'express'
 const Router = express.Router
@@ -170,26 +170,32 @@ app.get('/v3', async (req, resp) => {
 })
 
 
-// app.get('/busca', async(req, resp) => {
-//     try {
-//         let search = req.query.search;
-//         let r = await db.infod_ssc_produto.findAll(
-//             { where: {
-//                 [Op.or]: [
-//                     { 'nm_produto': {[Op.like]: `%${search}%` }},
-//                     { 'vl_produto': {[Op.like]: `%${search}%` }},
-//                     { 'nm_categoria': {[Op.like]: `%${search}%` }},
-//                     { 'ds_imagem': {[Op.like]: `%${search}%` }},
-//                 ]
-//             },
-//             attributes: camps()
-//          });
-//          resp.send(r);
+app.get('/busca', async(req, resp) => {
+    try {
+        let searching = req.query.search;
+        let r = await db.infod_ssc_produto.findAll(
+            { where: {
+                [Op.or]: [
+                    { 'nm_produto': {[Op.like]: `%${searching}%` }},
+                    { 'vl_produto': {[Op.like]: `%${searching}%` }},
+                    { 'nm_categoria': {[Op.like]: `%${searching}%` }},
+                    { 'ds_imagem': {[Op.like]: `%${searching}%` }},
+                ]
+            },
+            attributes: [
+                ['id_produto', 'id'],
+                ['nm_produto', 'produto'],
+                ['vl_produto', 'preco'],
+                ['nm_categoria', 'categoria'],
+                ['ds_imagem', 'imagem']
+            ]
+         });
+         resp.send(r);
 
-//     } catch (e) {
-//         resp.send({erro: e.toString()});
-//     }
-// })
+    } catch (e) {
+        resp.send({erro: e.toString()});
+    }
+})
 
 
 export default app;
