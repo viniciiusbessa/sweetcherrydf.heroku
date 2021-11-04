@@ -1,42 +1,38 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoa_dtn_tb_cliente extends Model {
+export default class infoc_tht_cartao extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_cliente: {
+    id_cartao: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    ds_email: {
-      type: DataTypes.STRING(100),
+    nr_cartao: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
-    ds_senha: {
-      type: DataTypes.STRING(20),
+    nm_cartao: {
+      type: DataTypes.STRING(40),
       allowNull: true
     },
-    nm_cliente: {
-      type: DataTypes.STRING(200),
+    nr_validade: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
-    ds_cpf: {
-      type: DataTypes.STRING(20),
+    nr_cvv: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
-    ds_telefone: {
-      type: DataTypes.STRING(25),
-      allowNull: true
-    },
-    dt_nascimento: {
-      type: DataTypes.DATEONLY,
+    nr_parcela: {
+      type: DataTypes.INTEGER,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoa_dtn_tb_cliente',
+    tableName: 'infoc_tht_cartao',
     timestamps: false,
     indexes: [
       {
@@ -44,11 +40,11 @@ export default class infoa_dtn_tb_cliente extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_cliente" },
+          { name: "id_cartao" },
         ]
       },
     ]
   });
-  return infoa_dtn_tb_cliente;
+  return infoc_tht_cartao;
   }
 }

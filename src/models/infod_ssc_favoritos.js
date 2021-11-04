@@ -1,10 +1,10 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoc_tct_compra extends Model {
+export default class infod_ssc_favoritos extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_compra: {
+    id_favorito: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
@@ -14,33 +14,21 @@ export default class infoc_tct_compra extends Model {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'infoc_tct_cliente',
+        model: 'infod_ssc_cliente',
         key: 'id_cliente'
       }
     },
-    id_endereco: {
+    id_produto: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'infoc_tct_endereco',
-        key: 'id_endereco'
+        model: 'infod_ssc_produto',
+        key: 'id_produto'
       }
-    },
-    ds_nota_fiscal: {
-      type: DataTypes.STRING(50),
-      allowNull: true
-    },
-    ds_forma_pagamento: {
-      type: DataTypes.STRING(40),
-      allowNull: true
-    },
-    bt_entrega: {
-      type: DataTypes.BOOLEAN,
-      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoc_tct_compra',
+    tableName: 'infod_ssc_favoritos',
     timestamps: false,
     indexes: [
       {
@@ -48,7 +36,7 @@ export default class infoc_tct_compra extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_compra" },
+          { name: "id_favorito" },
         ]
       },
       {
@@ -59,14 +47,14 @@ export default class infoc_tct_compra extends Model {
         ]
       },
       {
-        name: "id_endereco",
+        name: "id_produto",
         using: "BTREE",
         fields: [
-          { name: "id_endereco" },
+          { name: "id_produto" },
         ]
       },
     ]
   });
-  return infoc_tct_compra;
+  return infod_ssc_favoritos;
   }
 }

@@ -1,42 +1,46 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoa_gab_entrega extends Model {
+export default class infoc_tht_usuario extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_entrega: {
+    id_usuario: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_endereco: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'infoa_gab_endereco',
-        key: 'id_endereco'
-      }
-    },
-    ds_situacao: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    dt_situacao: {
-      type: DataTypes.DATE,
-      allowNull: true
-    },
-    id_venda: {
+    id_cartao: {
       type: DataTypes.INTEGER,
       allowNull: true,
       references: {
-        model: 'infoa_gab_venda',
-        key: 'id_venda'
+        model: 'infoc_tht_cartao',
+        key: 'id_cartao'
       }
+    },
+    nm_usuraio: {
+      type: DataTypes.STRING(30),
+      allowNull: true
+    },
+    ds_email: {
+      type: DataTypes.STRING(20),
+      allowNull: true
+    },
+    nr_cpf: {
+      type: DataTypes.INTEGER,
+      allowNull: true
+    },
+    dt_nascimento: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    ds_senha: {
+      type: DataTypes.INTEGER,
+      allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoa_gab_entrega',
+    tableName: 'infoc_tht_usuario',
     timestamps: false,
     indexes: [
       {
@@ -44,25 +48,18 @@ export default class infoa_gab_entrega extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_entrega" },
+          { name: "id_usuario" },
         ]
       },
       {
-        name: "id_endereco",
+        name: "id_cartao",
         using: "BTREE",
         fields: [
-          { name: "id_endereco" },
-        ]
-      },
-      {
-        name: "id_venda",
-        using: "BTREE",
-        fields: [
-          { name: "id_venda" },
+          { name: "id_cartao" },
         ]
       },
     ]
   });
-  return infoa_gab_entrega;
+  return infoc_tht_usuario;
   }
 }

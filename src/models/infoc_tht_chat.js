@@ -1,34 +1,30 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infoc_ntc_vestimento extends Model {
+export default class infoc_tht_chat extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_vestimento: {
+    id_mensagem: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    ds_inferior: {
-      type: DataTypes.STRING(255),
+    nm_nome: {
+      type: DataTypes.STRING(10),
       allowNull: true
     },
-    ds_superior: {
-      type: DataTypes.STRING(255),
+    ds_mensagem: {
+      type: DataTypes.STRING(100),
       allowNull: true
     },
-    ds_calcado: {
-      type: DataTypes.STRING(255),
-      allowNull: true
-    },
-    ds_complemento: {
-      type: DataTypes.STRING(255),
+    dt_messagem: {
+      type: DataTypes.DATE,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infoc_ntc_vestimento',
+    tableName: 'infoc_tht_chat',
     timestamps: false,
     indexes: [
       {
@@ -36,11 +32,11 @@ export default class infoc_ntc_vestimento extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_vestimento" },
+          { name: "id_mensagem" },
         ]
       },
     ]
   });
-  return infoc_ntc_vestimento;
+  return infoc_tht_chat;
   }
 }
