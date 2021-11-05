@@ -30,7 +30,7 @@ app.post('/', async (req, resp) => {
     }
 })
 
-app.delete('/id' , async ( req, resp ) => {
+app.delete('/:id' , async ( req, resp ) => {
     try {
         let { id } = req.params;
         let r = await db.infod_ssc_favoritos.destroy({ where: { id_favorito: id } })
