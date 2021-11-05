@@ -3,6 +3,7 @@ import clienteController from './controller/clienteController.js'
 import emailController from './controller/emailController.js'
 import enderecoController from './controller/enderecoController.js'
 import itemController from './controller/itemController.js'
+import favoritoController from './controller/favoritoController.js'
 import pedidoController from './controller/pedidoController.js'
 import produtoController from './controller/produtoController.js'
 import recuperarsenhaController from './controller/recuperarsenhaController.js'
@@ -21,6 +22,7 @@ server.use('/adm', admController);
 server.use('/cliente', clienteController);
 server.use('/enviaremail', emailController);
 server.use('/endereco', enderecoController);
+server.use('/favorito', favoritoController);
 server.use('/item', itemController);
 server.use('/pedido', pedidoController);
 server.use('/produto', produtoController);
