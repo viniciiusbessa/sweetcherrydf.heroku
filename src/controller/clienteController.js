@@ -90,12 +90,13 @@ app.post('/login', async (req, resp) => {
     try {
         let { email, senha } = req.body;
         let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
+        
 
         let r = await db.infod_ssc_cliente.findOne(
             {
                 where: {
                     ds_email: email,
-                    ds_senha: cryptoSenha
+                    ds_senha: senha
                 },
                 raw: true
             }
@@ -105,7 +106,7 @@ app.post('/login', async (req, resp) => {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
-        if (!email || !senha) {
+        if (!r) {
             return resp.send({ erro: 'Credenciais inválidas.' })
         }
     
