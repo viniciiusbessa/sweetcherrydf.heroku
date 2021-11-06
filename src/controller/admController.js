@@ -13,6 +13,7 @@ app.get('/', async (req, resp) => {
     try {
         let r = await db.infod_ssc_adm.findAll({
             attributes: [
+                ['id_adm', 'id'],
                 ['ds_email', 'email'],
                 ['ds_senha', 'senha'],
                 ['ds_codigo_adm', 'codigoAdm']
@@ -64,9 +65,10 @@ app.post('/login', async (req, resp) => {
 app.post('/cadastro', async (req, resp) => {
     try {
         
-        let  { email, senha } = req.body;
+        let  { email, senha, codigo } = req.body;
 
         let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
+        
 
         if (email === "" || senha === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
@@ -75,17 +77,31 @@ app.post('/cadastro', async (req, resp) => {
         if (!email.includes('@')) {
             return resp.send({ erro: 'Insira um email válido'})
         }
+
+        if (!codigo.includes('@AdmSCherry2021'))
+            return resp.send({ erro: 'Código inválido' })
         
 
         let b = await db.infod_ssc_adm.create({
             ds_email: email,
-            ds_senha: cryptoSenha
+            ds_senha: cryptoSenha,
+            ds_codigo_adm: codigo
         })
 
         resp.send(b);
     
     } catch(b) {
         resp.send({ erro: b.toString() })
+    }
+})
+
+app.delete('/:id', async (req, resp) => {
+    try {
+        let { id } = req.params;
+        let r = await db.infod_ssc_adm.destroy({ where: { id_adm: id } })
+        resp.sendStatus(200);
+    } catch (e) {
+        resp.send({ erro: e.toString() })
     }
 })
 
