@@ -147,11 +147,6 @@ app.put('/:id', async (req, resp) => {
             
 
 
-        let produtoRepetido = await db.infod_ssc_produto.findOne({ where: { nm_produto: nome } });
-        if (produtoRepetido != null)
-            return resp.send({ erro: ' Produto já existente' });
-
-
         let b = await db.infod_ssc_produto.update(
             {
                 nm_produto: nome,
