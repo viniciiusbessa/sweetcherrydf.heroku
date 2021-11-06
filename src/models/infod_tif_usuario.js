@@ -30,18 +30,6 @@ export default class infod_tif_usuario extends Model {
       type: DataTypes.DATE,
       allowNull: false
     },
-    bt_login_face: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    bt_login_insta: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
-    bt_login_google: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
     bt_online: {
       type: DataTypes.BOOLEAN,
       allowNull: false
