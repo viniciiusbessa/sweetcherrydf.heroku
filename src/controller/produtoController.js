@@ -35,8 +35,48 @@ app.post('/', async (req, resp) => {
         
         let { nome, preco, categoria, avaliacao, descricao, estoque, imagem } = req.body;
 
-        if (nome === ''  || preco === ''  || descricao === '' || imagem === '')
-            return resp.send({ erro: 'Preencha todos os campos!' })
+
+        if (nome === '' || preco === ''  || categoria === '' || avaliacao === '' || descricao === '' 
+            || estoque === '' || imagem === '')
+                return resp.send({ erro: 'Preencha todos os campos!' })
+
+
+        if (nome.length <= 4)
+            return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
+
+        if (categoria.length <= 4)
+            return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
+
+        if (descricao.length <= 10)
+            return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
+
+
+        if (imagem.length <= 30 || !imagem.includes('https'))
+            return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
+
+
+
+        if (preco <= 0 || avaliacao <= 0 || estoque <= 0)
+            return resp.send({ erro: 'Insira apenas números positivos!' })
+
+
+
+        if (isNaN(preco) === true)
+            return resp.send({ erro: 'Campo Preço só recebe números!' })
+
+        if (isNaN(avaliacao) === true)
+            return resp.send({ erro: 'Campo Avaliação só recebe números!' })
+
+        if (isNaN(estoque) === true)
+            return resp.send({ erro: 'Campo Estoque só recebe números!' })
+
+
+
+        let produtoRepetido = await db.infod_ssc_produto.findOne({ where: { nm_produto: nome } });
+        if (produtoRepetido != null)
+            return resp.send({ erro: ' Produto já existente' });
+
+
 
         let b = await db.infod_ssc_produto.create({
             nm_produto: nome,
@@ -69,6 +109,48 @@ app.put('/:id', async (req, resp) => {
     try{
         let { nome, preco, categoria, avaliacao, descricao, estoque, imagem } = req.body;
         let { id } = req.params;
+
+
+        if (nome === '' || preco === ''  || categoria === '' || avaliacao === '' || descricao === '' 
+            || estoque === '' || imagem === '')
+                return resp.send({ erro: 'Preencha todos os campos!' })
+
+
+        if (nome.length <= 4)
+            return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
+
+        if (categoria.length <= 4)
+            return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
+
+        if (descricao.length <= 10)
+            return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
+
+
+        if (imagem.length <= 30 || !imagem.includes('https'))
+            return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
+
+
+
+        if (preco <= 0 || avaliacao <= 0 || estoque <= 0)
+            return resp.send({ erro: 'Insira apenas números positivos!' })
+
+            
+
+        if (isNaN(preco) === true)
+            return resp.send({ erro: 'Campo Preço só recebe números!' })
+
+        if (isNaN(avaliacao) === true)
+            return resp.send({ erro: 'Campo Avaliação só recebe números!' })
+
+        if (isNaN(estoque) === true)
+            return resp.send({ erro: 'Campo Estoque só recebe números!' })
+            
+
+
+        let produtoRepetido = await db.infod_ssc_produto.findOne({ where: { nm_produto: nome } });
+        if (produtoRepetido != null)
+            return resp.send({ erro: ' Produto já existente' });
+
 
         let b = await db.infod_ssc_produto.update(
             {
