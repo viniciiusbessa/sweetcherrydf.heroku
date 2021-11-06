@@ -18,10 +18,6 @@ export default class infod_tif_autorizados extends Model {
       type: DataTypes.INTEGER,
       allowNull: false
     },
-    bt_postar: {
-      type: DataTypes.BOOLEAN,
-      allowNull: false
-    },
     bt_criar_comunidade: {
       type: DataTypes.BOOLEAN,
       allowNull: false
