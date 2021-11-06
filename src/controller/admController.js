@@ -14,7 +14,8 @@ app.get('/', async (req, resp) => {
         let r = await db.infod_ssc_adm.findAll({
             attributes: [
                 ['ds_email', 'email'],
-                ['ds_senha', 'senha']
+                ['ds_senha', 'senha'],
+                ['ds_codigo_adm', 'codigoAdm']
             ]
         });
         resp.send(r);
@@ -28,7 +29,7 @@ app.get('/', async (req, resp) => {
 app.post('/login', async (req, resp) => {
     try {
         
-        let { email, senha } = req.body;
+        let { email, senha, codigo } = req.body;
         let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
         
 
@@ -36,13 +37,14 @@ app.post('/login', async (req, resp) => {
             {
                 where: {
                     ds_email: email,
-                    ds_senha: cryptoSenha
+                    ds_senha: cryptoSenha,
+                    ds_codigo_adm: codigo
                 },
                 raw: true
             }
         )
 
-        if (email === "" || senha === "") {
+        if (email === "" || senha === "" || codigo === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
