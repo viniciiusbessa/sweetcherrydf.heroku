@@ -96,7 +96,7 @@ app.post('/login', async (req, resp) => {
             {
                 where: {
                     ds_email: email,
-                    ds_senha: senha
+                    ds_senha: cryptoSenha
                 },
                 raw: true
             }
