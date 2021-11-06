@@ -33,6 +33,14 @@ export default class infoa_gab_entrega extends Model {
         model: 'infoa_gab_venda',
         key: 'id_venda'
       }
+    },
+    dt_saida: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    dt_entrega: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
     sequelize,
