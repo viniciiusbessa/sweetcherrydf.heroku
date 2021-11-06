@@ -147,4 +147,23 @@ app.post('/cadastro', async (req, resp) => {
 }
 })
 
+app.post('/confi_pagamento', async (req, resp ) => {
+    try {
+        const credenciais = await db.infod_ssc_cliente.findOne({
+            where: {
+                ds_email: req.body.email
+            }
+        });
+
+        if (!credenciais) {
+            return resp.send({ erro: 'Preencha todos os campos'})
+        }
+
+        resp.send(credenciais);
+
+    } catch (b) {
+        resp.send({ erro: b.toString() })
+    }
+})
+
 export default app;
