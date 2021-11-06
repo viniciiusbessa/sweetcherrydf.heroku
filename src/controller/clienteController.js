@@ -1,4 +1,5 @@
 import db from '../db.js'
+
 import crypto from 'crypto-js'
 
 import  Sequelize  from 'sequelize';
@@ -142,9 +143,9 @@ app.post('/cadastro', async (req, resp) => {
 
         resp.send(b);
     
-} catch(b) {
-    resp.send({ erro: b.toString() })
-}
+    } catch(b) {
+        resp.send({ erro: b.toString() })
+    }
 })
 
 export default app;
