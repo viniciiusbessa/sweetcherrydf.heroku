@@ -135,18 +135,13 @@ import _infod_ssc_item from  "./infod_ssc_item.js";
 import _infod_ssc_pedido from  "./infod_ssc_pedido.js";
 import _infod_ssc_produto from  "./infod_ssc_produto.js";
 import _infod_ssc_venda from  "./infod_ssc_venda.js";
-import _infod_tif_acessos from  "./infod_tif_acessos.js";
-import _infod_tif_amigos from  "./infod_tif_amigos.js";
 import _infod_tif_animes from  "./infod_tif_animes.js";
 import _infod_tif_autorizados from  "./infod_tif_autorizados.js";
 import _infod_tif_chat from  "./infod_tif_chat.js";
 import _infod_tif_chat_mensagem from  "./infod_tif_chat_mensagem.js";
 import _infod_tif_chat_usuario from  "./infod_tif_chat_usuario.js";
 import _infod_tif_comentario from  "./infod_tif_comentario.js";
-import _infod_tif_comentario_post from  "./infod_tif_comentario_post.js";
 import _infod_tif_comunidade from  "./infod_tif_comunidade.js";
-import _infod_tif_like from  "./infod_tif_like.js";
-import _infod_tif_post from  "./infod_tif_post.js";
 import _infod_tif_usuario from  "./infod_tif_usuario.js";
 import _insf_tb_produto from  "./insf_tb_produto.js";
 import _insf_tb_usuario from  "./insf_tb_usuario.js";
@@ -291,18 +286,13 @@ export default function initModels(sequelize) {
   var infod_ssc_pedido = _infod_ssc_pedido.init(sequelize, DataTypes);
   var infod_ssc_produto = _infod_ssc_produto.init(sequelize, DataTypes);
   var infod_ssc_venda = _infod_ssc_venda.init(sequelize, DataTypes);
-  var infod_tif_acessos = _infod_tif_acessos.init(sequelize, DataTypes);
-  var infod_tif_amigos = _infod_tif_amigos.init(sequelize, DataTypes);
   var infod_tif_animes = _infod_tif_animes.init(sequelize, DataTypes);
   var infod_tif_autorizados = _infod_tif_autorizados.init(sequelize, DataTypes);
   var infod_tif_chat = _infod_tif_chat.init(sequelize, DataTypes);
   var infod_tif_chat_mensagem = _infod_tif_chat_mensagem.init(sequelize, DataTypes);
   var infod_tif_chat_usuario = _infod_tif_chat_usuario.init(sequelize, DataTypes);
   var infod_tif_comentario = _infod_tif_comentario.init(sequelize, DataTypes);
-  var infod_tif_comentario_post = _infod_tif_comentario_post.init(sequelize, DataTypes);
   var infod_tif_comunidade = _infod_tif_comunidade.init(sequelize, DataTypes);
-  var infod_tif_like = _infod_tif_like.init(sequelize, DataTypes);
-  var infod_tif_post = _infod_tif_post.init(sequelize, DataTypes);
   var infod_tif_usuario = _infod_tif_usuario.init(sequelize, DataTypes);
   var insf_tb_produto = _insf_tb_produto.init(sequelize, DataTypes);
   var insf_tb_usuario = _insf_tb_usuario.init(sequelize, DataTypes);
@@ -395,16 +385,16 @@ export default function initModels(sequelize) {
   infoc_ntc_vestimento.hasMany(infoc_ntc_denuncia, { as: "infoc_ntc_denuncia", foreignKey: "id_vestimento"});
   infoc_nws_tb_calendario_item.belongsTo(infoc_nws_tb_calendario, { as: "id_calendario_infoc_nws_tb_calendario", foreignKey: "id_calendario"});
   infoc_nws_tb_calendario.hasMany(infoc_nws_tb_calendario_item, { as: "infoc_nws_tb_calendario_items", foreignKey: "id_calendario"});
+  infoc_nws_tb_venda_item.belongsTo(infoc_nws_tb_calendario_item, { as: "id_calendario_item_infoc_nws_tb_calendario_item", foreignKey: "id_calendario_item"});
+  infoc_nws_tb_calendario_item.hasMany(infoc_nws_tb_venda_item, { as: "infoc_nws_tb_venda_items", foreignKey: "id_calendario_item"});
+  infoc_nws_tb_venda.belongsTo(infoc_nws_tb_cartao, { as: "id_cartao_infoc_nws_tb_cartao", foreignKey: "id_cartao"});
+  infoc_nws_tb_cartao.hasMany(infoc_nws_tb_venda, { as: "infoc_nws_tb_vendas", foreignKey: "id_cartao"});
   infoc_nws_tb_evento.belongsTo(infoc_nws_tb_categoria, { as: "id_categoria_infoc_nws_tb_categorium", foreignKey: "id_categoria"});
   infoc_nws_tb_categoria.hasMany(infoc_nws_tb_evento, { as: "infoc_nws_tb_eventos", foreignKey: "id_categoria"});
   infoc_nws_tb_calendario.belongsTo(infoc_nws_tb_evento, { as: "id_evento_infoc_nws_tb_evento", foreignKey: "id_evento"});
   infoc_nws_tb_evento.hasMany(infoc_nws_tb_calendario, { as: "infoc_nws_tb_calendarios", foreignKey: "id_evento"});
-  infoc_nws_tb_venda_item.belongsTo(infoc_nws_tb_evento, { as: "id_evento_infoc_nws_tb_evento", foreignKey: "id_evento"});
-  infoc_nws_tb_evento.hasMany(infoc_nws_tb_venda_item, { as: "infoc_nws_tb_venda_items", foreignKey: "id_evento"});
   infoc_nws_tb_venda.belongsTo(infoc_nws_tb_usuario, { as: "id_usuario_infoc_nws_tb_usuario", foreignKey: "id_usuario"});
   infoc_nws_tb_usuario.hasMany(infoc_nws_tb_venda, { as: "infoc_nws_tb_vendas", foreignKey: "id_usuario"});
-  infoc_nws_tb_cartao.belongsTo(infoc_nws_tb_venda, { as: "id_venda_infoc_nws_tb_venda", foreignKey: "id_venda"});
-  infoc_nws_tb_venda.hasMany(infoc_nws_tb_cartao, { as: "infoc_nws_tb_cartaos", foreignKey: "id_venda"});
   infoc_nws_tb_pix.belongsTo(infoc_nws_tb_venda, { as: "id_venda_infoc_nws_tb_venda", foreignKey: "id_venda"});
   infoc_nws_tb_venda.hasMany(infoc_nws_tb_pix, { as: "infoc_nws_tb_pixes", foreignKey: "id_venda"});
   infoc_nws_tb_venda_item.belongsTo(infoc_nws_tb_venda, { as: "id_venda_infoc_nws_tb_venda", foreignKey: "id_venda"});
@@ -624,18 +614,13 @@ export default function initModels(sequelize) {
     infod_ssc_pedido,
     infod_ssc_produto,
     infod_ssc_venda,
-    infod_tif_acessos,
-    infod_tif_amigos,
     infod_tif_animes,
     infod_tif_autorizados,
     infod_tif_chat,
     infod_tif_chat_mensagem,
     infod_tif_chat_usuario,
     infod_tif_comentario,
-    infod_tif_comentario_post,
     infod_tif_comunidade,
-    infod_tif_like,
-    infod_tif_post,
     infod_tif_usuario,
     insf_tb_produto,
     insf_tb_usuario,
