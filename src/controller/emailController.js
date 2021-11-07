@@ -32,9 +32,7 @@ app.get('/buscarbairro', async (req, resp) => {
         resp.send(r.data);
 
     } catch(e) {
-
         resp.send(e);
-
     }
 })
 
