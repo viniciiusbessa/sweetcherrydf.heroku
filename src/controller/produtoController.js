@@ -253,10 +253,7 @@ app.get('/busca', async(req, resp) => {
         let r = await db.infod_ssc_produto.findAll(
             { where: {
                 [Op.or]: [
-                    { 'nm_produto': {[Op.like]: `%${searching}%` }},
-                    { 'vl_produto': {[Op.like]: `%${searching}%` }},
-                    { 'nm_categoria': {[Op.like]: `%${searching}%` }},
-                    { 'ds_imagem': {[Op.like]: `%${searching}%` }},
+                    { 'nm_produto': {[Op.like]: `%${searching}%` }}
                 ]
             },
             attributes: [

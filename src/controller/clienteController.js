@@ -87,6 +87,16 @@ app.delete('/:id', async (req, resp) => {
     }
 })
 
+app.get('/login', async(req, resp) => {
+    try {
+        let usu = await db.infod_ssc_cliente.findOne({where: {ds_email: req.query.email}});
+        if (confirm == null);
+            return resp.send({erro: "Usuário não cadastrado"})
+    } catch (e) {
+        
+    }
+})
+
 app.post('/login', async (req, resp) => {
     try {
         let { email, senha } = req.body;
@@ -148,18 +158,39 @@ app.post('/cadastro', async (req, resp) => {
     }
 })
 
+
+
+
+
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
+        
+        const { endereco, numero, complemento, cliente} = req.body;
+        const { cpf, nascimento, telefone } = cliente;
+
         const user = await db.infod_ssc_cliente.findOne({
             where: {
-                ds_email: req.body.email,
+                ds_email: req.body.email
             }
-        });
+        }); 
+
+         const enderecoCliente = await db.infod_ssc_endereco.update({
+              ds_endereco: endereco,
+              nr_endereco: numero,
+              ds_complemento: complemento 
+         }, {
+            where: {
+                id_endereco: user.id_endereco
+            }
+         })
+
+
          const confirmacao = await db.infod_ssc_cliente.update({
-            ds_cpf: req.body.cpf,
-            dt_nascimento: req.body.nascimento,
-            nr_telefone: req.body.telefone
-         },{
+            id_endereco: enderecoCliente.id_endereco, 
+            ds_cpf: cpf,
+            dt_nascimento: nascimento,
+            nr_telefone: telefone
+         }, {
             where: {
                 id_cliente: user.id_cliente
             }
@@ -171,6 +202,5 @@ app.post('/confi_pagamento', async (req, resp ) => {
         resp.send({ erro: b.toString() })
     }
 })
-
 
 export default app;
