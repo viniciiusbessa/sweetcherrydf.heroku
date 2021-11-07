@@ -163,23 +163,24 @@ app.post('/confi_pagamento', async (req, resp ) => {
                 ds_email: req.body.email
             }
         }); 
-         const EnderecoCliente = await db.infod_ssc_endereco.update({
+
+         const enderecoCliente = await db.infod_ssc_endereco.update({
               ds_endereco: endereco,
               nr_endereco: numero,
               ds_complemento: complemento 
-         },{
+         }, {
             where: {
                 id_endereco: user.id_endereco
             }
          })
-                    
+
 
          const confirmacao = await db.infod_ssc_cliente.update({
-            id_endereco: EnderecoCliente.id_endereco, 
+            id_endereco: enderecoCliente.id_endereco, 
             ds_cpf: cpf,
             dt_nascimento: nascimento,
-            nr_telefone:telefone
-         },{
+            nr_telefone: telefone
+         }, {
             where: {
                 id_cliente: user.id_cliente
             }
