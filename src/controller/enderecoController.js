@@ -19,12 +19,12 @@ app.get('/', async (req, resp) => {
 app.post('/', async (req, resp) => {
     try {
         
-        let { endereco, numero_do_endereco, descricao_do_cep, nome_cidade, complemento } = req.body;
+        let { endereco, numero_do_endereco, cep, nome_cidade, complemento } = req.body;
 
         let j = await db.infod_ssc_endereco.create({
             ds_endereco: endereco,
             nr_endereco: numero_do_endereco,
-            ds_cep: descricao_do_cep,
+            ds_cep: cep,
             nm_cidade: nome_cidade,
             ds_complemeno: complemento
         })

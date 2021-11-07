@@ -150,21 +150,27 @@ app.post('/cadastro', async (req, resp) => {
 
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
-        const credenciais = await db.infod_ssc_cliente.findOne({
+        const user = await db.infod_ssc_cliente.findOne({
             where: {
-                ds_email: req.body.email
+                ds_email: req.body.email,
             }
         });
+         const confirmacao = await db.infod_ssc_cliente.update({
+            ds_cpf: req.body.cpf,
+            dt_nascimento: req.body.nascimento,
+            nr_telefone: req.body.telefone
+         },{
+            where: {
+                id_cliente: user.id_cliente
+            }
+         });
 
-        if (!credenciais) {
-            return resp.send({ erro: 'Preencha todos os campos'})
-        }
-
-        resp.send(credenciais);
+        resp.send(confirmacao);
 
     } catch (b) {
         resp.send({ erro: b.toString() })
     }
 })
+
 
 export default app;
