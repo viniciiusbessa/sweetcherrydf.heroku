@@ -261,7 +261,9 @@ app.get('/busca', async(req, resp) => {
                 ['nm_produto', 'produto'],
                 ['vl_produto', 'preco'],
                 ['nm_categoria', 'categoria'],
-                ['ds_imagem', 'imagem']
+                ['ds_imagem', 'imagem'],
+                ['qtd_disponivel_estoque', 'estoque'],
+                ['ds_produto', 'descricao']
             ]
          });
          resp.send(r);
