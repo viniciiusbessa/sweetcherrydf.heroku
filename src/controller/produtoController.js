@@ -212,7 +212,7 @@ app.get('/v3', async (req, resp) => {
     let page = req.query.page || 0;
     if (page <= 0) page = 1;
 
-    const itemsPerPage = 6;
+    const itemsPerPage = 3;
     const skipItems    = (page-1) * itemsPerPage;
 
     const produtos = await db.infod_ssc_produto.findAll({
@@ -225,14 +225,19 @@ app.get('/v3', async (req, resp) => {
         attributes: [
             ['id_produto', 'id'],
             ['nm_produto', 'produto'],
-            ['ds_produto', 'descricao'],
             ['vl_produto', 'preco'],
-            ['ds_produto', 'imagem']
+            ['nm_categoria', 'categoria'],
+            ['ds_imagem', 'imagem'],
+            ['qtd_disponivel_estoque', 'estoque'],
+            ['ds_produto', 'descricao']
         ]
     });
 
     const total = await db.infod_ssc_produto.findOne({
         raw: true,
+        where: {
+            nm_categoria: req.query.categoria
+        },
         attributes: [
             [fn('count', 1), 'qtd']
         ]
@@ -241,7 +246,7 @@ app.get('/v3', async (req, resp) => {
         resp.send({
             items: produtos,
             total: total.qtd,
-            totalPaginas: Math.ceil(total.qtd/6),
+            totalPaginas: Math.ceil(total.qtd/3),
             pagina: Number(page)
         });
 })
@@ -250,6 +255,9 @@ app.get('/v3', async (req, resp) => {
 app.get('/busca', async(req, resp) => {
     try {
         let searching = req.query.search;
+        if(searching.length < 3){
+            return resp.send({erro: 'Digite no mínimo 3 caracteres'})
+        }
         let r = await db.infod_ssc_produto.findAll(
             { where: {
                 [Op.or]: [
