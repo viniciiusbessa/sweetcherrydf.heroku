@@ -20,8 +20,7 @@ app.get('/', async (req, resp) => {
                 ['dt_nascimento', 'Data de nascimento'],
                 ['nr_telefone', 'Número de telefone'],
                 ['ds_email', 'Email'],
-                ['ds_codigo', 'Codigo'],
-                ['ds_senha', 'Senha']
+                ['ds_codigo', 'Codigo']
             ]
         });
         resp.send(r);
@@ -162,6 +161,33 @@ app.post('/cadastro', async (req, resp) => {
 
 
 
+app.get('/confi_pagamento', async (req, resp ) => {
+    try {
+        let r = await db.infod_ssc_endereco.findAll({
+            attributes: [
+                ['id_endereco', 'id'],
+                ['ds_endereco', 'endereco'],
+                ['nr_endereco', 'numero'],
+                ['ds_complemento', 'complemento']
+            ],
+            include: [
+                {
+                    model: db.infod_ssc_cliente,
+                    as: 'infod_ssc_clientes',
+                    required: true,
+                    attributes: []
+                }
+            ]
+        });
+
+        resp.send(r);
+
+    } catch (b) {
+        resp.send({ erro: b.toString() })
+    }
+})
+
+
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
         
@@ -174,7 +200,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
             }
         }); 
 
-         const enderecoCliente = await db.infod_ssc_endereco.update({
+         const enderecoCliente = await db.infod_ssc_endereco.create({
               ds_endereco: endereco,
               nr_endereco: numero,
               ds_complemento: complemento 
@@ -190,10 +216,6 @@ app.post('/confi_pagamento', async (req, resp ) => {
             ds_cpf: cpf,
             dt_nascimento: nascimento,
             nr_telefone: telefone
-         }, {
-            where: {
-                id_cliente: user.id_cliente
-            }
          });
 
         resp.send(confirmacao);
