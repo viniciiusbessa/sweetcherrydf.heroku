@@ -159,8 +159,6 @@ app.post('/cadastro', async (req, resp) => {
 
 
 
-
-
 app.get('/confi_pagamento', async (req, resp ) => {
     try {
         let r = await db.infod_ssc_endereco.findAll({
@@ -191,8 +189,10 @@ app.get('/confi_pagamento', async (req, resp ) => {
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
         
-        const { endereco, numero, complemento, cliente} = req.body;
+        const {  endereco, numero, complemento, cliente} = req.body;
         const { cpf, nascimento, telefone } = cliente;
+
+        const { numero_do_cartao, parcelas } = req.body;
 
         const user = await db.infod_ssc_cliente.findOne({
             where: {
@@ -200,7 +200,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
             }
         }); 
 
-         const enderecoCliente = await db.infod_ssc_endereco.create({
+         const enderecoCliente = await db.infod_ssc_endereco.update({
               ds_endereco: endereco,
               nr_endereco: numero,
               ds_complemento: complemento 
@@ -208,7 +208,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
             where: {
                 id_endereco: user.id_endereco
             }
-         })
+         });
 
 
          const confirmacao = await db.infod_ssc_cliente.update({
@@ -216,9 +216,23 @@ app.post('/confi_pagamento', async (req, resp ) => {
             ds_cpf: cpf,
             dt_nascimento: nascimento,
             nr_telefone: telefone
+         }, {
+             where: {
+                 id_cliente: user.id_cliente
+             }
          });
 
-        resp.send(confirmacao);
+
+         const finalizacao = await db.infod_ssc_venda.update({
+            id_cliente: confirmacao.id_cliente,
+            nr_cartao: numero_do_cartao,
+            qtd_parcelas: parcelas 
+         }, {
+             where: user.id_venda
+         })
+        
+        
+         resp.send(finalizacao);
 
     } catch (b) {
         resp.send({ erro: b.toString() })
