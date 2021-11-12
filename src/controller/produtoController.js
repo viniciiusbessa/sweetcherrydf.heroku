@@ -125,9 +125,17 @@ app.put('/:id', async (req, resp) => {
         if (descricao.length <= 10)
             return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
 
+        // if (nome.length >= 25 )
+        //     return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
 
-        if (imagem.length <= 30 || !imagem.includes('https'))
-            return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
+        // if (categoria.length >= 10 )
+        // return resp.send({ erro: ' Insira menos caracteres 10 no campo categoria!' })
+
+        // if (descricao.length >= 70 )
+        // return resp.send({ erro: ' Insira menos caracteres 70 no campo descricao!' })
+
+        // if (imagem.length <= 30 || !imagem.includes('https'))
+        //     return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
 
 
 
