@@ -41,20 +41,25 @@ app.post('/', async (req, resp) => {
                 return resp.send({ erro: 'Preencha todos os campos!' })
 
 
+        //////////////////////////////
+        if (nome.length >= 25 )
+            return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
         if (nome.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
 
+        if (categoria.length >= 10 )
+            return resp.send({ erro: ' Insira menos caracteres 10 no campo categoria!' })
         if (categoria.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
 
+        if (descricao.length >= 80 )
+            return resp.send({ erro: ' Insira menos caracteres 80 no campo descricao!' })
         if (descricao.length <= 10)
             return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
-
-
+        //////////////////////////////
+        
         if (imagem.length <= 30 || !imagem.includes('https'))
             return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
-
-
 
         if (preco <= 0 || avaliacao <= 0 || estoque <= 0)
             return resp.send({ erro: 'Insira apenas números positivos!' })
@@ -115,45 +120,39 @@ app.put('/:id', async (req, resp) => {
             || estoque === '' || imagem === '')
                 return resp.send({ erro: 'Preencha todos os campos!' })
 
-
+        //////////////////////////////
+        if (nome.length >= 25 )
+            return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
         if (nome.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
 
+
+        if (categoria.length >= 10 )
+        return resp.send({ erro: ' Insira menos de 10 caracteres no campo categoria!' })
         if (categoria.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
 
+        if (descricao.length >= 80 )
+        return resp.send({ erro: ' Insira menos que 80 caracteres no campo descricao!' })
         if (descricao.length <= 10)
-            return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
+        return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
+        //////////////////////////////
 
-        // if (nome.length >= 25 )
-        //     return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
-
-        // if (categoria.length >= 10 )
-        // return resp.send({ erro: ' Insira menos caracteres 10 no campo categoria!' })
-
-        // if (descricao.length >= 70 )
-        // return resp.send({ erro: ' Insira menos caracteres 70 no campo descricao!' })
-
-        // if (imagem.length <= 30 || !imagem.includes('https'))
-        //     return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
-
-
+        if (imagem.length <= 30 || !imagem.includes('https'))
+            return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
 
         if (preco <= 0 || avaliacao <= 0 || estoque <= 0)
             return resp.send({ erro: 'Insira apenas números positivos!' })
 
-            
-
         if (isNaN(preco) === true)
             return resp.send({ erro: 'Campo Preço só recebe números!' })
-
+    
         if (isNaN(avaliacao) === true)
             return resp.send({ erro: 'Campo Avaliação só recebe números!' })
 
         if (isNaN(estoque) === true)
             return resp.send({ erro: 'Campo Estoque só recebe números!' })
             
-
 
         let b = await db.infod_ssc_produto.update(
             {
