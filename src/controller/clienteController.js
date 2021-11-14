@@ -161,19 +161,26 @@ app.post('/cadastro', async (req, resp) => {
 
 app.get('/confi_pagamento', async (req, resp ) => {
     try {
-        let r = await db.infod_ssc_endereco.findAll({
+        let r = await db.infod_ssc_cliente.findAll({
             attributes: [
-                ['id_endereco', 'id'],
-                ['ds_endereco', 'endereco'],
-                ['nr_endereco', 'numero'],
-                ['ds_complemento', 'complemento']
+                ['id_cliente', 'id'],
+                ['nm_cliente', 'Nome do cliente'],
+                ['ds_cpf', 'CPF'],
+                ['dt_nascimento', 'Data de nascimento'],
+                ['nr_telefone', 'Número de telefone'],
+                ['ds_email', 'Email']
             ],
             include: [
                 {
-                    model: db.infod_ssc_cliente,
-                    as: 'infod_ssc_clientes',
+                    model: db.infod_ssc_endereco,
+                    as: 'id_endereco_infod_ssc_endereco',
                     required: true,
-                    attributes: []
+                    attributes: [
+                        ['id_endereco', 'id'],
+                        ['ds_endereco', 'endereco'],
+                        ['nr_endereco', 'numero'],
+                        ['ds_complemento', 'complemento'],
+                    ]
                 }
             ]
         });

@@ -41,23 +41,25 @@ app.post('/', async (req, resp) => {
                 return resp.send({ erro: 'Preencha todos os campos!' })
 
 
-        //////////////////////////////
         if (nome.length >= 25 )
-            return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
+            return resp.send({ erro: ' Insira menos de 25 caracteres no campo Nome!' })
         if (nome.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
 
+
         if (categoria.length >= 10 )
-            return resp.send({ erro: ' Insira menos caracteres 10 no campo categoria!' })
+            return resp.send({ erro: ' Insira menos caracteres 10 no campo Categoria!' })
         if (categoria.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
 
-        if (descricao.length >= 80 )
-            return resp.send({ erro: ' Insira menos caracteres 80 no campo descricao!' })
+
+        if (descricao.length >= 60 )
+            return resp.send({ erro: ' Insira menos caracteres 80 no campo Descrição!' })
         if (descricao.length <= 10)
             return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
-        //////////////////////////////
         
+
+
         if (imagem.length <= 30 || !imagem.includes('https'))
             return resp.send({ erro: ' Insira um link válido no campo Imagem!' })
 
