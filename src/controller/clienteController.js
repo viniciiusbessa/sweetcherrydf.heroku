@@ -161,25 +161,25 @@ app.post('/cadastro', async (req, resp) => {
 
 app.get('/confi_pagamento', async (req, resp ) => {
     try {
-        let r = await db.infod_ssc_cliente.findAll({
+        let r = await db.infod_ssc_endereco.findAll({
             attributes: [
-                ['id_cliente', 'id'],
-                ['nm_cliente', 'Nome do cliente'],
-                ['ds_cpf', 'CPF'],
-                ['dt_nascimento', 'Data de nascimento'],
-                ['nr_telefone', 'Número de telefone'],
-                ['ds_email', 'Email']
+                ['id_endereco', 'id'],
+                ['ds_endereco', 'endereco'],
+                ['nr_endereco', 'numero'],
+                ['ds_complemento', 'complemento'],
             ],
             include: [
                 {
-                    model: db.infod_ssc_endereco,
-                    as: 'id_endereco_infod_ssc_endereco',
+                    model: db.infod_ssc_cliente,
+                    as: 'infod_ssc_clientes',
                     required: true,
                     attributes: [
-                        ['id_endereco', 'id'],
-                        ['ds_endereco', 'endereco'],
-                        ['nr_endereco', 'numero'],
-                        ['ds_complemento', 'complemento'],
+                        ['id_cliente', 'id'],
+                        ['nm_cliente', 'Nome do cliente'],
+                        ['ds_cpf', 'CPF'],
+                        ['dt_nascimento', 'Data de nascimento'],
+                        ['nr_telefone', 'Número de telefone'],
+                        ['ds_email', 'Email']
                     ]
                 }
             ]
@@ -228,8 +228,8 @@ app.post('/confi_pagamento', async (req, resp ) => {
                  id_cliente: user.id_cliente
              }
          });
-
-
+        
+        
          const finalizacao = await db.infod_ssc_venda.update({
             id_cliente: confirmacao.id_cliente,
             nr_cartao: numero_do_cartao,
