@@ -41,8 +41,8 @@ app.post('/', async (req, resp) => {
                 return resp.send({ erro: 'Preencha todos os campos!' })
 
 
-        if (nome.length >= 25 )
-            return resp.send({ erro: ' Insira menos de 25 caracteres no campo Nome!' })
+        if (nome.length >= 35 )
+            return resp.send({ erro: ' Insira menos de 35 caracteres no campo Nome!' })
         if (nome.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
 
@@ -53,8 +53,8 @@ app.post('/', async (req, resp) => {
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
 
 
-        if (descricao.length >= 60 )
-            return resp.send({ erro: ' Insira menos caracteres 80 no campo Descrição!' })
+        if (descricao.length >= 100 )
+            return resp.send({ erro: ' Insira menos caracteres 100 no campo Descrição!' })
         if (descricao.length <= 10)
             return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
         
@@ -123,8 +123,8 @@ app.put('/:id', async (req, resp) => {
                 return resp.send({ erro: 'Preencha todos os campos!' })
 
         //////////////////////////////
-        if (nome.length >= 25 )
-            return resp.send({ erro: ' Insira menos de 25 caracteres no campo nome!' })
+        if (nome.length >= 35 )
+            return resp.send({ erro: ' Insira menos de 35 caracteres no campo nome!' })
         if (nome.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Nome!' })
 
@@ -134,8 +134,8 @@ app.put('/:id', async (req, resp) => {
         if (categoria.length <= 4)
             return resp.send({ erro: ' Insira mais que 4 caracteres no campo Categoria!' })
 
-        if (descricao.length >= 80 )
-        return resp.send({ erro: ' Insira menos que 80 caracteres no campo descricao!' })
+        if (descricao.length >= 100 )
+        return resp.send({ erro: ' Insira menos que 100 caracteres no campo descricao!' })
         if (descricao.length <= 10)
         return resp.send({ erro: ' Insira mais que 10 caracteres no campo Descrição!' })
         //////////////////////////////
@@ -265,7 +265,7 @@ app.get('/busca', async(req, resp) => {
     try {
         let searching = req.query.search;
         if(searching.length < 3){
-            return resp.send({erro: 'Digite no mínimo 3 caracteres'})
+            return resp.send({erro: 'Ops! Não encontramos nenhum resultado.'})
         }
         let r = await db.infod_ssc_produto.findAll(
             { where: {
