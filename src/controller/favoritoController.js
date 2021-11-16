@@ -43,7 +43,12 @@ app.get('/', async (req, resp) => {
 app.post('/', async (req, resp) => {
     try {
         
-        let { cliente, produto } = req.body;
+        let e = await db.infod_ssc_produto.findOne({where: {id_produto: id} })
+            if (e !== null){
+                return resp.send({ erro: ' Produto já existe!' })
+            }
+        
+        let {cliente, produto} = req.body;
 
         let b = await db.infod_ssc_favoritos.create({
             id_cliente: cliente,
