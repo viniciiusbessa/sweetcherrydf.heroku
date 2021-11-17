@@ -80,7 +80,7 @@ app.post('/', async (req, resp) => {
 
 
         let produtoRepetido = await db.infod_ssc_produto.findOne({ where: { nm_produto: nome } });
-        if (produtoRepetido != null)
+        if (produtoRepetido !== null)
             return resp.send({ erro: ' Produto já existente' });
 
 

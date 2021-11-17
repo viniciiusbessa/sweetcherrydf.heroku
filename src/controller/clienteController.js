@@ -209,8 +209,38 @@ app.get('/confi_pagamento', async (req, resp ) => {
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
         
-        const {  endereco, numero, complemento, cpf, nascimento, 
+        let { endereco, numero, complemento, cpf, nascimento, 
                  telefone, forma_pagamento, numero_do_cartao, parcelas} = req.body;
+
+
+        if (endereco === '' || numero === '' || complemento === '' || cpf === '' || nascimento === '' || telefone === '' || forma_pagamento === '' || numero_do_cartao === '' || parcelas === '') {
+            return resp.send({ erro: 'Preencha todos os campos!' });
+        }
+
+        if (isNaN(numero) === true)
+            return resp.send({ erro: 'Campo Número só recebe números!' })
+        if (numero.length <= 4 )
+            return resp.send({ erro: ' Insira um número válido no campo Número!' })
+    
+        if (isNaN(cpf) === true)
+            return resp.send({ erro: 'Campo CPF só recebe números!' })
+        if (cpf.length = 11 )
+            return resp.send({ erro: ' Insira um CPF válido no campo CPF!' })
+
+        if (isNaN(telefone) === true)
+            return resp.send({ erro: 'Campo Telefone só recebe números!' })
+        if (telefone.length <= 11 )
+            return resp.send({ erro: ' Insira um Telefone válido no campo telefone!' })
+
+        if (isNaN(numero_do_cartao) === true)
+            return resp.send({ erro: 'Campo Númetro do Cartão só recebe números!' })
+        if (numero_do_cartao.length = 16 )
+            return resp.send({ erro: ' Insira um Numero de cartão válido no campo Numero de Cartão!' })
+
+        if (complemento.length <= 200 )
+            return resp.send({ erro: 'Complemento muito grande!' })
+
+
 
         const user = await db.infod_ssc_cliente.findOne({
             where: {
@@ -243,6 +273,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
         
          const venda = await db.infod_ssc_venda.create({
             id_cliente: cliente.id_cliente,
+            id_endereco_entrega: enderecoCliente.id_endereco_entrega,
             tp_forma_pagamento: forma_pagamento,
             nr_cartao: numero_do_cartao,
             qtd_parcelas: parcelas 
@@ -254,37 +285,9 @@ app.post('/confi_pagamento', async (req, resp ) => {
         
         
          resp.send({mensagem: 'Ok'});
-
-         if (endereco === "" || numero === "" || complemento === "" || cpf === "" || nascimento === "" || telefone === "" || forma_pagamento === "" || numero_do_cartao === "" || parcelas === "") {
-             return resp.send({ erro: 'Preencha todos os campos!' });
-        }
-
-        if (isNaN(numero) === true)
-            return resp.send({ erro: 'Campo Número só recebe números!' })
-        if (numero.length <= 4 )
-            return resp.send({ erro: ' Insira um número válido no campo Número!' })
-    
-        if (isNaN(cpf) === true)
-            return resp.send({ erro: 'Campo CPF só recebe números!' })
-        if (cpf.length = 11 )
-            return resp.send({ erro: ' Insira um CPF válido no campo CPF!' })
-
-        if (isNaN(telefone) === true)
-            return resp.send({ erro: 'Campo Telefone só recebe números!' })
-        if (telefone.length <= 11 )
-            return resp.send({ erro: ' Insira um Telefone válido no campo telefone!' })
-
-        if (isNaN(numero_do_cartao) === true)
-            return resp.send({ erro: 'Campo Númetro do Cartão só recebe números!' })
-        if (numero_do_cartao.length = 16 )
-            return resp.send({ erro: ' Insira um Numero de cartão válido no campo Numero de Cartão!' })
-
-        if (complemento.length <= 200 )
-            return resp.send({ erro: 'Complemento muito grande!' })
         
         // if (endereco)
         //     return resp.send({ erro: '' })
-
 
     } catch (b) {
         resp.send({ erro: b.toString() })

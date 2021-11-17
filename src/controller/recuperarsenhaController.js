@@ -37,7 +37,7 @@ app.post('/esqueciasenha', async (req, resp) => {
             <p> Entre com o código <b>${code}</b> para prosseguir com a recuperação.
         `)
 
-        resp.send(user);
+        resp.send({mensagem: 'Ok'});
 
     } catch(b) {
         resp.send({ erro: b.toString() })
