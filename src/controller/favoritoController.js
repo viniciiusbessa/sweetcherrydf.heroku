@@ -42,21 +42,21 @@ app.get('/', async (req, resp) => {
 
 app.post('/', async (req, resp) => {
     try {
-        
-        let e = await db.infod_ssc_produto.findOne({where: {id_produto: id} })
-            if (e !== null){
-                return resp.send({ erro: ' Produto já existe!' })
-            }
-        
         let {cliente, produto} = req.body;
+        
+        let e = await db.infod_ssc_produto.findOne({ where: { id_produto: produto } })
+        if (e !== null)
+            return resp.send({ erro: ' Produto já existe!' })
 
-        let b = await db.infod_ssc_favoritos.create({
+
+        let r = await db.infod_ssc_favoritos.create({
             id_cliente: cliente,
             id_produto: produto
         })
-        resp.send(b);
+
+        resp.send(r);
     
-    } catch(b) {
+    } catch (b) {
         resp.send({ erro: b.toString() })
     }
 })

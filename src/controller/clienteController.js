@@ -213,31 +213,35 @@ app.post('/confi_pagamento', async (req, resp ) => {
                  telefone, forma_pagamento, numero_do_cartao, parcelas} = req.body;
 
 
-        if (endereco === '' || numero === '' || complemento === '' || cpf === '' || nascimento === '' || telefone === '' || forma_pagamento === '' || numero_do_cartao === '' || parcelas === '') {
+        if (endereco === '' || numero === '' || complemento === '' || cpf === '' || nascimento === '' || telefone === '' || numero_do_cartao === '' || parcelas === '') {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
         if (isNaN(numero) === true)
             return resp.send({ erro: 'Campo Número só recebe números!' })
-        if (numero.length <= 4 )
-            return resp.send({ erro: ' Insira um número válido no campo Número!' })
+        if (numero.length > 4 )
+            return resp.send({ erro: ' Insira um número de endereço válido!' })
     
         if (isNaN(cpf) === true)
             return resp.send({ erro: 'Campo CPF só recebe números!' })
-        if (cpf.length = 11 )
-            return resp.send({ erro: ' Insira um CPF válido no campo CPF!' })
+        if (cpf.length > 11 || cpf.length < 11)
+            return resp.send({ erro: ' Insira um CPF válido!' })
 
         if (isNaN(telefone) === true)
             return resp.send({ erro: 'Campo Telefone só recebe números!' })
-        if (telefone.length <= 11 )
-            return resp.send({ erro: ' Insira um Telefone válido no campo telefone!' })
+        if (telefone.length > 9 || telefone.length < 9)
+            return resp.send({ erro: ' Insira um número Telefone válido!' })
 
         if (isNaN(numero_do_cartao) === true)
-            return resp.send({ erro: 'Campo Númetro do Cartão só recebe números!' })
-        if (numero_do_cartao.length = 16 )
-            return resp.send({ erro: ' Insira um Numero de cartão válido no campo Numero de Cartão!' })
+            return resp.send({ erro: 'Campo Número do Cartão só recebe números!' })
+        if (numero_do_cartao.length > 16 || numero_do_cartao.length < 16)
+            return resp.send({ erro: ' Insira um Numero de cartão válido!' })
 
-        if (complemento.length <= 200 )
+        if (numero <= 0 || telefone <= 0 || parcelas <= 0)
+            return resp.send({ erro: 'Insira apenas números positivos!' })
+
+
+        if (complemento.length >= 70 )
             return resp.send({ erro: 'Complemento muito grande!' })
 
 
