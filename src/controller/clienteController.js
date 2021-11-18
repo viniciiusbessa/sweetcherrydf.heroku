@@ -229,8 +229,9 @@ app.post('/confi_pagamento', async (req, resp ) => {
 
         if (isNaN(telefone) === true)
             return resp.send({ erro: 'Campo Telefone só recebe números!' })
-        if (telefone.length > 9 || telefone.length < 9)
+        if (telefone.length > 11 || telefone.length < 11)
             return resp.send({ erro: ' Insira um número Telefone válido!' })
+
 
         if (isNaN(numero_do_cartao) === true)
             return resp.send({ erro: 'Campo Número do Cartão só recebe números!' })
@@ -290,8 +291,6 @@ app.post('/confi_pagamento', async (req, resp ) => {
         
          resp.send({mensagem: 'Ok'});
         
-        // if (endereco)
-        //     return resp.send({ erro: '' })
 
     } catch (b) {
         resp.send({ erro: b.toString() })
