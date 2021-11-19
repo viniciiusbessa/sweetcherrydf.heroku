@@ -131,21 +131,29 @@ app.post('/login', async (req, resp) => {
 app.post('/cadastro', async (req, resp) => {
     try {
         
-        let  { nome, email, senha } = req.body;
+        let  { nome, senha, cpf, email, nascimento } = req.body;
 
         let cryptoSenha = crypto.SHA256(senha).toString(crypto.enc.Base64);
 
-        if (nome === "" || email === "" || senha === "") {
+        if (nome === "" || senha === "" || cpf === "" || email === "") {
             return resp.send({ erro: 'Preencha todos os campos!' });
         }
+
+        if (isNaN(cpf) === true)
+            return resp.send({ erro: 'Campo CPF só recebe números!' })
+        if (cpf.length !== 11)
+            return resp.send({ erro: ' Insira um CPF válido!' })
+
 
         if (!email.includes('@')) {
             return resp.send({ erro: 'Insira um email válido'})
         }
-        
+
 
         let b = await db.infod_ssc_cliente.create({
             nm_cliente: nome,
+            ds_cpf: cpf,
+            dt_nascimento: nascimento,
             ds_email: email,
             ds_senha: cryptoSenha
         })
@@ -209,33 +217,29 @@ app.get('/confi_pagamento', async (req, resp ) => {
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
         
-        let { endereco, numero, complemento, cpf, nascimento, 
-                 telefone, forma_pagamento, numero_do_cartao, parcelas} = req.body;
+        let { endereco, numero, complemento, telefone, forma_pagamento, numero_do_cartao, parcelas} = req.body;
 
 
-        if (endereco === '' || numero === '' || complemento === '' || cpf === '' || nascimento === '' || telefone === '' || numero_do_cartao === '' || parcelas === '') {
-            return resp.send({ erro: 'Preencha todos os campos!' });
+        if (endereco === '' || numero === '' || complemento === '' 
+            || telefone === '' || forma_pagamento === '' || numero_do_cartao === '' || parcelas === '') {
+                return resp.send({ erro: 'Preencha todos os campos!' });
         }
 
         if (isNaN(numero) === true)
             return resp.send({ erro: 'Campo Número só recebe números!' })
         if (numero.length > 4 )
             return resp.send({ erro: ' Insira um número de endereço válido!' })
-    
-        if (isNaN(cpf) === true)
-            return resp.send({ erro: 'Campo CPF só recebe números!' })
-        if (cpf.length > 11 || cpf.length < 11)
-            return resp.send({ erro: ' Insira um CPF válido!' })
+
 
         if (isNaN(telefone) === true)
             return resp.send({ erro: 'Campo Telefone só recebe números!' })
-        if (telefone.length > 11 || telefone.length < 11)
+        if (telefone.length !== 11)
             return resp.send({ erro: ' Insira um número Telefone válido!' })
 
 
         if (isNaN(numero_do_cartao) === true)
             return resp.send({ erro: 'Campo Número do Cartão só recebe números!' })
-        if (numero_do_cartao.length > 16 || numero_do_cartao.length < 16)
+        if (numero_do_cartao.length !== 16)
             return resp.send({ erro: ' Insira um Numero de cartão válido!' })
 
         if (numero <= 0 || telefone <= 0 || parcelas <= 0)
@@ -265,9 +269,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
 
 
          const cliente = await db.infod_ssc_cliente.update({
-            id_endereco: enderecoCliente.id_endereco, 
-            ds_cpf: cpf,
-            dt_nascimento: nascimento,
+            id_endereco: enderecoCliente.id_endereco,
             nr_telefone: telefone
          }, {
              where: {
