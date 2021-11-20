@@ -217,7 +217,9 @@ app.get('/confi_pagamento', async (req, resp ) => {
 app.post('/confi_pagamento', async (req, resp ) => {
     try {
         
-        let { endereco, numero, complemento, telefone, forma_pagamento, numero_do_cartao, parcelas} = req.body;
+        let { endereco, numero, complemento, telefone, forma_pagamento, numero_do_cartao, parcelas } = req.body;
+
+        let { produtos } = req.body;
 
 
         if (endereco === '' || numero === '' || complemento === '' 
@@ -278,7 +280,7 @@ app.post('/confi_pagamento', async (req, resp ) => {
          });
         
         
-         const venda = await db.infod_ssc_venda.create({
+        const venda = await db.infod_ssc_venda.create({
             id_cliente: cliente.id_cliente,
             id_endereco_entrega: enderecoCliente.id_endereco_entrega,
             tp_forma_pagamento: forma_pagamento,
@@ -289,6 +291,24 @@ app.post('/confi_pagamento', async (req, resp ) => {
                 id_cliente: user.id_cliente
             }
          })
+
+
+
+        const produtoUsu = await db.infod_ssc_produto.findAll({
+            where: {
+                'nm_produto': { [Op.in]: Object.keys(produtos) }
+            }
+        })
+
+        for (let produto of produtoUsu) {
+            const gerarVendaItem = await db.infod_ssc_item.create({
+                id_venda: venda.id_venda,
+                id_produto: produto.id_produto,
+                vl_item: produto.vl_item,
+                qtd_produto: produtos[produto.nm_produto],
+                dt_pedido: Date.now()
+            });
+        }
         
         
          resp.send({mensagem: 'Ok'});
