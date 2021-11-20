@@ -10,32 +10,20 @@ export default class infoc_tht_usuario extends Model {
       allowNull: false,
       primaryKey: true
     },
-    id_cartao: {
-      type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'infoc_tht_cartao',
-        key: 'id_cartao'
-      }
-    },
-    nm_usuraio: {
+    nm_usuario: {
       type: DataTypes.STRING(30),
       allowNull: true
     },
     ds_email: {
-      type: DataTypes.STRING(20),
+      type: DataTypes.STRING(50),
       allowNull: true
     },
-    nr_cpf: {
+    nr_celular: {
       type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    dt_nascimento: {
-      type: DataTypes.DATE,
       allowNull: true
     },
     ds_senha: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING(50),
       allowNull: true
     }
   }, {
@@ -49,13 +37,6 @@ export default class infoc_tht_usuario extends Model {
         using: "BTREE",
         fields: [
           { name: "id_usuario" },
-        ]
-      },
-      {
-        name: "id_cartao",
-        using: "BTREE",
-        fields: [
-          { name: "id_cartao" },
         ]
       },
     ]

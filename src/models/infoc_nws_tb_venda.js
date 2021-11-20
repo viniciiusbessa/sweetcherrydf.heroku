@@ -33,6 +33,18 @@ export default class infoc_nws_tb_venda extends Model {
         model: 'infoc_nws_tb_cartao',
         key: 'id_cartao'
       }
+    },
+    dt_inclusao: {
+      type: DataTypes.DATE,
+      allowNull: true
+    },
+    id_evento: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: {
+        model: 'infoc_nws_tb_evento',
+        key: 'id_evento'
+      }
     }
   }, {
     sequelize,
@@ -59,6 +71,13 @@ export default class infoc_nws_tb_venda extends Model {
         using: "BTREE",
         fields: [
           { name: "id_cartao" },
+        ]
+      },
+      {
+        name: "id_evento",
+        using: "BTREE",
+        fields: [
+          { name: "id_evento" },
         ]
       },
     ]

@@ -1,26 +1,34 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infob_mw_lista_item extends Model {
+export default class infod_tif_favoritos extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_lista_item: {
+    id_favoritos: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_lista: {
+    id_usuario: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'infod_tif_usuario',
+        key: 'id_usuario'
+      }
     },
-    id_filme: {
+    id_anime: {
       type: DataTypes.INTEGER,
-      allowNull: true
+      allowNull: true,
+      references: {
+        model: 'infod_tif_animes',
+        key: 'id_anime'
+      }
     }
   }, {
     sequelize,
-    tableName: 'infob_mw_lista_item',
+    tableName: 'infod_tif_favoritos',
     timestamps: false,
     indexes: [
       {
@@ -28,25 +36,25 @@ export default class infob_mw_lista_item extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_lista_item" },
+          { name: "id_favoritos" },
         ]
       },
       {
-        name: "id_lista",
+        name: "id_usuario",
         using: "BTREE",
         fields: [
-          { name: "id_lista" },
+          { name: "id_usuario" },
         ]
       },
       {
-        name: "id_filme",
+        name: "id_anime",
         using: "BTREE",
         fields: [
-          { name: "id_filme" },
+          { name: "id_anime" },
         ]
       },
     ]
   });
-  return infob_mw_lista_item;
+  return infod_tif_favoritos;
   }
 }

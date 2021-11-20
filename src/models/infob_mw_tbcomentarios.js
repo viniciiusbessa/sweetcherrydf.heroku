@@ -1,54 +1,42 @@
 import _sequelize from 'sequelize';
 const { Model, Sequelize } = _sequelize;
 
-export default class infod_ssc_pedido extends Model {
+export default class infob_mw_tbcomentarios extends Model {
   static init(sequelize, DataTypes) {
   super.init({
-    id_pedido: {
+    id_cometariio: {
       autoIncrement: true,
       type: DataTypes.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    id_venda: {
+    id_filme: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'infod_ssc_venda',
-        key: 'id_venda'
-      }
+      allowNull: true
     },
-    id_item: {
+    id_usuario: {
       type: DataTypes.INTEGER,
-      allowNull: true,
-      references: {
-        model: 'infod_ssc_item',
-        key: 'id_item'
-      }
-    },
-    dt_pedido: {
-      type: DataTypes.DATE,
       allowNull: true
     },
-    ds_entregue: {
-      type: DataTypes.BOOLEAN,
+    ds_mensagem: {
+      type: DataTypes.STRING(300),
       allowNull: true
     },
-    ds_acaminho: {
-      type: DataTypes.BOOLEAN,
+    dt_comentario: {
+      type: DataTypes.DATEONLY,
       allowNull: true
     },
-    ds_preparando: {
-      type: DataTypes.BOOLEAN,
+    ds_curtidas: {
+      type: DataTypes.INTEGER,
       allowNull: true
     },
-    vl_pedido: {
-      type: DataTypes.DECIMAL(10,2),
+    qtd_curtidas: {
+      type: DataTypes.TEXT,
       allowNull: true
     }
   }, {
     sequelize,
-    tableName: 'infod_ssc_pedido',
+    tableName: 'infob_mw_tbcomentarios',
     timestamps: false,
     indexes: [
       {
@@ -56,25 +44,25 @@ export default class infod_ssc_pedido extends Model {
         unique: true,
         using: "BTREE",
         fields: [
-          { name: "id_pedido" },
+          { name: "id_cometariio" },
         ]
       },
       {
-        name: "id_item",
+        name: "id_filme",
         using: "BTREE",
         fields: [
-          { name: "id_item" },
+          { name: "id_filme" },
         ]
       },
       {
-        name: "id_venda",
+        name: "id_usuario",
         using: "BTREE",
         fields: [
-          { name: "id_venda" },
+          { name: "id_usuario" },
         ]
       },
     ]
   });
-  return infod_ssc_pedido;
+  return infob_mw_tbcomentarios;
   }
 }
