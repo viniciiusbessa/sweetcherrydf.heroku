@@ -219,8 +219,6 @@ app.post('/confi_pagamento', async (req, resp ) => {
         
         let { endereco, numero, complemento, telefone, forma_pagamento, numero_do_cartao, parcelas } = req.body;
 
-        let { produtos } = req.body;
-
 
         if (endereco === '' || numero === '' || complemento === '' 
             || telefone === '' || forma_pagamento === '' || numero_do_cartao === '' || parcelas === '') {
@@ -250,7 +248,6 @@ app.post('/confi_pagamento', async (req, resp ) => {
 
         if (complemento.length >= 70 )
             return resp.send({ erro: 'Complemento muito grande!' })
-
 
 
         const user = await db.infod_ssc_cliente.findOne({
@@ -291,24 +288,6 @@ app.post('/confi_pagamento', async (req, resp ) => {
                 id_cliente: user.id_cliente
             }
          })
-
-
-
-        const produtoUsu = await db.infod_ssc_produto.findAll({
-            where: {
-                'nm_produto': { [Op.in]: Object.keys(produtos) }
-            }
-        })
-
-        for (let produto of produtoUsu) {
-            const gerarVendaItem = await db.infod_ssc_item.create({
-                id_venda: venda.id_venda,
-                id_produto: produto.id_produto,
-                vl_item: produto.vl_item,
-                qtd_produto: produtos[produto.nm_produto],
-                dt_pedido: Date.now()
-            });
-        }
         
         
          resp.send({mensagem: 'Ok'});
